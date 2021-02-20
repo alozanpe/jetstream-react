@@ -1,0 +1,120 @@
+{
+    "app": {
+        "loading": "Cargando ...",
+        "date": "DD-MM-YYYY",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "nevermind": "Cancelar",
+        "error": "Whoops! Algo fue mal."
+    },
+    "pages": {
+        "welcome": {
+            "links": {
+                "dashboard": "Dashboard",
+                "login": "Login",
+                "register": "Registrase"
+            },
+            "documentation": "Documentación",
+            "docText": "Laravel tiene una documentación maravillosa y completa que cubre todos los aspectos del framework. Ya sea que sea nuevo en el framework o tenga experiencia previa con Laravel, le recomendamos leer toda la documentación de principio a fin.",
+            "laracast": "Laracast",
+            "laracastText": "Laracasts ofrece miles de tutoriales en video sobre el desarrollo de Laravel, PHP y JavaScript. Pruébelos, compruébelo usted mismo y aumente de manera masiva sus habilidades de desarrollo en el proceso.",
+            "news": "Laravel News",
+            "newsText": "Laravel News es un portal y un boletín informativo impulsado por la comunidad que reúne todas las noticias más recientes y más importantes del ecosistema de Laravel, incluidos nuevos lanzamientos de paquetes y tutoriales.",
+            "ecosystem": "Ecosistema Vibrante",
+            "ecoText1": "La sólida biblioteca de Laravel de herramientas y bibliotecas propias, como",
+            "ecoText2": ", y",
+            "ecoText3": "lo ayudan a llevar sus proyectos al siguiente nivel. Combínelos con potentes bibliotecas de código abierto como",
+            "ecoText4": " y más."
+        },
+        "dashboard": {
+            "dashboard": "Dashboard",
+            "welcome": "Welcome to your Jetstream application!",
+            "intro": "Laravel Jetstream provides a beautiful, robust starting point for your next Laravel application. Laravel is designed to help you build your application using a development environment that is simple, powerful, and enjoyable. We believe you should love expressing your creativity through programming, so we have spent time carefully crafting the Laravel ecosystem to be a breath of fresh air. We hope you love it.",
+            "documentationHeader": "Documentation",
+            "documentationDesc": "Laravel has wonderful documentation covering every aspect of the framework. Whether you're new to the framework or have previous experience, we recommend reading all of the documentation from beginning to end.",
+            "documentationLink": "Explore the documentation"
+        },
+        "login": {
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "rememberMe": "Recuérdame",
+            "forgot": "¿Olvidó su contraseña?",
+            "login": "Login"
+        },
+        "register": {
+            "name": "Nombre",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "confirmation": "Confirme la contraseña",
+            "already": "¿Ya está registrado?",
+            "register": "Registrase",
+            "agree": "Estoy de acuerdo con los",
+            "terms": "Términos del Sevicio",
+            "and": "y la",
+            "privacy": "Política de Privacidad"
+        },
+        "confirmPassword": {
+            "message": "Esta es un área segura de la aplicación. Por favor, confirme su contraseña antes de continuar.",
+            "password": "Contraseña",
+            "confirm": "Confirmar"
+        },
+        "forgotPassword": {
+            "message": "¿Olvidó su contraseña? No hay problema. Sólo indíquenos su dirección de correo electrónico y le enviaremos un enlace para que pueda elegir una nueva.",
+            "email": "Correo electrónico",
+            "send": "Enviar enlace de recuperación"
+        },
+        "resetPassword": {
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "confirmation": "Confirme la contraseña",
+            "reset": "Restablecer"
+        },
+        "profile": {
+            "title": "Perfil",
+            "deleteUserForm": {
+                "title": "Eliminar cuenta",
+                "description": "Eliminar su cuenta de forma permanente",
+                "content": "Una vez que se elimine su cuenta, todos sus recursos y datos se eliminarán permanentemente. Antes de eliminar su cuenta, descargue cualquier dato o información que desee conservar.",
+                "modalContent": "¿Estás seguro de que deseas eliminar tu cuenta? Una vez que se elimine su cuenta, todos sus recursos y datos se eliminarán permanentemente. Ingrese su contraseña para confirmar que desea eliminar permanentemente su cuenta.",
+                "passwordPlaceholder": "Contraseña"
+            },
+            "logoutOtherSessionsForm": {
+                "title": "Sesiones del navegador",
+                "description": "Administre y cierre la sesión de sus sesiones activas en otros navegadores y dispositivos.",
+                "content": "Si es necesario, puede cerrar la sesión de todas las demás sesiones de su navegador en todos sus dispositivos. Algunas de sus sesiones recientes se enumeran a continuación; sin embargo, esta lista puede no ser exhaustiva. Si cree que su cuenta se ha visto comprometida, también debe actualizar su contraseña.",
+                "this": "Este dispositivo",
+                "last": "Última activa",
+                "logoutOther": "Cerrar otras sesiones",
+                "confirm": "Ingrese su contraseña para confirmar que desea cerrar la sesión de sus otras sesiones de navegador en todos sus dispositivos.",
+                "passwordPlaceholder": "Contraseña"
+            },
+            "updateProfileInformationForm": {
+                "title": "Información del perfil",
+                "description": "Actualice la información de perfil y la dirección de correo electrónico de su cuenta.",
+                "photo": "Imagen",
+                "selectNew": "Seleccione una nueva imagen",
+                "remove": "Eliminar imagen",
+                "name": "Nombre",
+                "email": "Correo electrónico"
+            },
+            "updatePasswordForm": {
+                "title": "Actualizar contraseña",
+                "description": "Asegúrese de que su cuenta esté usando una contraseña larga y aleatoria para mantenerse seguro.",
+                "current": "Contraseña actual",
+                "new": "Nueva contraseña",
+                "confirmation": "Confirme la contraseña"
+            }
+        }
+    },
+    "appLayout": {
+        "dashboard": "Dashboard",
+        "manageTeam": "Administrar equipo",
+        "teamSettings": "Configuración del equipo",
+        "createTeam": "Crear nuevo equipo",
+        "switchTeam": "Cambiar de equipo",
+        "manageAccount": "Administrar cuenta",
+        "profile": "Perfil",
+        "tokens": "API Tokens",
+        "logout": "Cerrar sesión"
+    }
+}

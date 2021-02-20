@@ -1,21 +1,27 @@
-require('./bootstrap');
-
-// Import modules...
-import { createApp, h } from 'vue';
-import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-vue3';
+import React from 'react';
+import { render } from 'react-dom';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import { InertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 
-const el = document.getElementById('app');
+import rootReducer from './store';
 
-createApp({
-    render: () =>
-        h(InertiaApp, {
-            initialPage: JSON.parse(el.dataset.page),
-            resolveComponent: (name) => require(`./Pages/${name}`).default,
-        }),
-})
-    .mixin({ methods: { route } })
-    .use(InertiaPlugin)
-    .mount(el);
+import './i18n';
 
-InertiaProgress.init({ color: '#4B5563' });
+const app = document.getElementById('app');
+const store = configureStore({
+    reducer: rootReducer,
+});
+
+InertiaProgress.init();
+
+render(
+    <Provider store={store}>
+        <InertiaApp
+            initialPage={JSON.parse(app.dataset.page)}
+            resolveComponent={(name) => import(`./Pages/${name}`).then((module) => module.default)}
+        />
+    </Provider>,
+    app
+);

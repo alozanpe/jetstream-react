@@ -1,4 +1,8 @@
 const mix = require('laravel-mix');
+const cssImport = require('postcss-import');
+const cssNesting = require('postcss-nesting');
+const purgecss = require('@fullhuman/postcss-purgecss');
+const tailwindcss = require('tailwindcss');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,12 +15,28 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').vue()
+mix.js('resources/js/app.js', 'public/js').react()
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
         require('autoprefixer'),
     ])
+    .options({
+        postCss: [
+            cssImport(),
+            cssNesting(),
+            tailwindcss('tailwind.config.js'),
+            ...(mix.inProduction()
+                ? [
+                    purgecss({
+                        content: ['./resources/views/**/*.blade.php', './resources/js/**/*.jsx'],
+                        defaultExtractor: (content) => content.match(/[\w-/:.]+(?<!:)/g) || [],
+                        whitelistPatternsChildren: [/nprogress/],
+                    }),
+                ]
+                : []),
+        ],
+    })
     .webpackConfig(require('./webpack.config'));
 
 if (mix.inProduction()) {
