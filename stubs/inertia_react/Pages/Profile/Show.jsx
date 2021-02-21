@@ -8,6 +8,7 @@ import DeleteUserForm from '@/Pages/Profile/DeleteUserForm';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/LogoutOtherBrowserSessionsForm';
 import UpdateProfileInformationForm from '@/Pages/Profile/UpdateProfileInformationForm';
 import UpdatePasswordForm from '@/Pages/Profile/UpdatePasswordForm';
+import TwoFactorAuthenticationForm from '@/Pages/Profile/TwoFactorAuthenticationForm';
 
 const Show = () => {
     const { jetstream, sessions, user, errorBags } = usePage().props;
@@ -44,7 +45,12 @@ const Show = () => {
                         </React.Fragment>
                     )}
 
-                    {jetstream.canManageTwoFactorAuthentication && null}
+                    {jetstream.canManageTwoFactorAuthentication && (
+                        <React.Fragment>
+                            <TwoFactorAuthenticationForm className="mt-10 sm:mt-0" />
+                            <SectionBorder />
+                        </React.Fragment>
+                    )}
 
                     <LogoutOtherBrowserSessionsForm sessions={sessions} className="mt-10 sm:mt-0" />
 

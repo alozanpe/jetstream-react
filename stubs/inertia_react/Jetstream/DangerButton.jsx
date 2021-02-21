@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 const DangerButton = ({ type, text, className, onClick, disabled }) => {
+    const { t } = useTranslation();
+
     return (
         <button
             type={type}
@@ -9,14 +12,14 @@ const DangerButton = ({ type, text, className, onClick, disabled }) => {
             onClick={onClick}
             disabled={disabled}
         >
-            {text}
+            {t(text)}
         </button>
     );
 };
 
 DangerButton.propTypes = {
     type: PropTypes.string,
-    text: PropTypes.string,
+    text: PropTypes.string.isRequired,
     className: PropTypes.string,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,
@@ -24,7 +27,6 @@ DangerButton.propTypes = {
 
 DangerButton.defaultProps = {
     type: 'button',
-    text: 'Button',
     className: '',
     onClick: () => {},
     disabled: false,

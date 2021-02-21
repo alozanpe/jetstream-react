@@ -54,6 +54,9 @@
             "privacy": "Política de Privacidad"
         },
         "confirmPassword": {
+            "title": "Confirmar contraseña",
+            "content": "Por su seguridad, por favor confirme su contraseña para continuar.",
+            "button": "Confirmar",
             "message": "Esta es un área segura de la aplicación. Por favor, confirme su contraseña antes de continuar.",
             "password": "Contraseña",
             "confirm": "Confirmar"
@@ -103,6 +106,12 @@
                 "current": "Contraseña actual",
                 "new": "Nueva contraseña",
                 "confirmation": "Confirme la contraseña"
+            },
+            "twoFactorAuthenticationForm": {
+                "enable": "Habilitar",
+                "disable": "Deshabilitar",
+                "regenerateRecoveryCodes": "Regenerar códigos de recuperación",
+                "showRecoveryCodes": "Mostrar códigos de recuperación"
             }
         }
     },

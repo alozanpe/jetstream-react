@@ -15,7 +15,8 @@ const tailwindcss = require('tailwindcss');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').react()
+mix.js('resources/js/app.js', 'public/js')
+    .react()
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
@@ -28,16 +29,17 @@ mix.js('resources/js/app.js', 'public/js').react()
             tailwindcss('tailwind.config.js'),
             ...(mix.inProduction()
                 ? [
-                    purgecss({
-                        content: ['./resources/views/**/*.blade.php', './resources/js/**/*.jsx'],
-                        defaultExtractor: (content) => content.match(/[\w-/:.]+(?<!:)/g) || [],
-                        whitelistPatternsChildren: [/nprogress/],
-                    }),
-                ]
+                      purgecss({
+                          content: ['./resources/views/**/*.blade.php', './resources/js/**/*.jsx'],
+                          defaultExtractor: (content) => content.match(/[\w-/:.]+(?<!:)/g) || [],
+                          whitelistPatternsChildren: [/nprogress/],
+                      }),
+                  ]
                 : []),
         ],
     })
-    .webpackConfig(require('./webpack.config'));
+    .webpackConfig(require('./webpack.config'))
+    .sourceMaps();
 
 if (mix.inProduction()) {
     mix.version();
