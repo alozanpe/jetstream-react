@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 
 const Trigger = () => null;
 const Content = () => null;
 
-const Dropdown = ({ align, contentClasses, children }) => {
+const Dropdown = ({ align, width, contentClasses, children }) => {
     const [open, setOpen] = useState(false);
     const trigger = children.find((child) => child.type === Trigger);
     const content = children.find((child) => child.type === Content);
@@ -28,15 +28,23 @@ const Dropdown = ({ align, contentClasses, children }) => {
         }
     };
 
-    const getOpenClass = () => {
+    const getOpenClass = useMemo(() => {
+        let classes;
+
         if (align === 'left') {
-            return 'origin-top-left left-0';
+            classes = 'origin-top-left left-0 ';
         } else if (align === 'right') {
-            return 'origin-top-right right-0';
+            classes = 'origin-top-right right-0 ';
         } else {
-            return 'origin-top';
+            classes = 'origin-top ';
         }
-    };
+
+        classes += {
+            48: 'w-48',
+        }[width];
+
+        return classes;
+    }, [align, width]);
 
     useEffect(() => {
         document.addEventListener('keydown', closeOnEscape);
@@ -69,7 +77,7 @@ const Dropdown = ({ align, contentClasses, children }) => {
                     >
                         {open && (
                             <div
-                                className={`absolute z-50 mt-2 rounded-md shadow-lg ${getOpenClass()}`}
+                                className={`absolute z-50 mt-2 rounded-md shadow-lg ${getOpenClass}`}
                             >
                                 <div
                                     className={`rounded-md ring-1 ring-black ring-opacity-5 ${contentClasses().join(
@@ -92,12 +100,14 @@ Dropdown.Content = Content;
 
 Dropdown.propTypes = {
     align: PropTypes.string,
+    width: PropTypes.string,
     contentClasses: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node)]).isRequired,
 };
 
 Dropdown.defaultProps = {
     align: 'right',
+    width: '48',
     contentClasses: () => ['py-1', 'bg-white'],
 };
 

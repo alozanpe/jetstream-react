@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import AppLayout from '@/Layout/AppLayout';
+import AppLayout from '@/Layouts/AppLayout';
 import Welcome from '@/Jetstream/Welcome';
 
 const Dashboard = () => {
@@ -11,7 +11,7 @@ const Dashboard = () => {
         <AppLayout>
             <AppLayout.Header>
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    {t('dashboardPage.dashboard')}
+                    {t('pages.dashboard.title')}
                 </h2>
             </AppLayout.Header>
             <div className="py-12">

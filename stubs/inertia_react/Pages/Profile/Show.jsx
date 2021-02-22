@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePage } from '@inertiajs/inertia-react';
 
-import AppLayout from '@/Layout/AppLayout';
+import AppLayout from '@/Layouts/AppLayout';
 import SectionBorder from '@/Jetstream/SectionBorder';
 import DeleteUserForm from '@/Pages/Profile/DeleteUserForm';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/LogoutOtherBrowserSessionsForm';

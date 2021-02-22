@@ -15,12 +15,12 @@ const Welcome = ({ canLogin, canRegister }) => {
                 <div className="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     {user ? (
                         <InertiaLink href="/dashboard" className="text-sm text-gray-700 underline">
-                            {t('welcomePage.links.dashboard')}
+                            {t('pages.welcome.links.dashboard')}
                         </InertiaLink>
                     ) : (
                         <React.Fragment>
                             <InertiaLink href="/login" className="text-sm text-gray-700 underline">
-                                {t('welcomePage.links.login')}
+                                {t('pages.welcome.links.login')}
                             </InertiaLink>
 
                             {canRegister && (
@@ -28,7 +28,7 @@ const Welcome = ({ canLogin, canRegister }) => {
                                     href="/register"
                                     className="ml-4 text-sm text-gray-700 underline"
                                 >
-                                    {t('welcomePage.links.register')}
+                                    {t('pages.welcome.links.register')}
                                 </InertiaLink>
                             )}
                         </React.Fragment>
@@ -69,14 +69,14 @@ const Welcome = ({ canLogin, canRegister }) => {
                                         href="https://laravel.com/docs"
                                         className="underline text-gray-900 dark:text-white"
                                     >
-                                        {t('welcomePage.documentation')}
+                                        {t('pages.welcome.documentation')}
                                     </a>
                                 </div>
                             </div>
 
                             <div className="ml-12">
                                 <div className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    {t('welcomePage.docText')}
+                                    {t('pages.welcome.docText')}
                                 </div>
                             </div>
                         </div>
@@ -100,14 +100,14 @@ const Welcome = ({ canLogin, canRegister }) => {
                                         href="https://laracasts.com"
                                         className="underline text-gray-900 dark:text-white"
                                     >
-                                        {t('welcomePage.laracast')}
+                                        {t('pages.welcome.laracast')}
                                     </a>
                                 </div>
                             </div>
 
                             <div className="ml-12">
                                 <div className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    {t('welcomePage.laracastText')}
+                                    {t('pages.welcome.laracastText')}
                                 </div>
                             </div>
                         </div>
@@ -130,14 +130,14 @@ const Welcome = ({ canLogin, canRegister }) => {
                                         href="https://laravel-news.com/"
                                         className="underline text-gray-900 dark:text-white"
                                     >
-                                        {t('welcomePage.news')}
+                                        {t('pages.welcome.news')}
                                     </a>
                                 </div>
                             </div>
 
                             <div className="ml-12">
                                 <div className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    {t('welcomePage.newsText')}
+                                    {t('pages.welcome.newsText')}
                                 </div>
                             </div>
                         </div>
@@ -156,13 +156,13 @@ const Welcome = ({ canLogin, canRegister }) => {
                                     <path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <div className="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">
-                                    {t('welcomePage.ecosystem')}
+                                    {t('pages.welcome.ecosystem')}
                                 </div>
                             </div>
 
                             <div className="ml-12">
                                 <div className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    {t('welcomePage.ecoText1')}{' '}
+                                    {t('pages.welcome.ecoText1')}{' '}
                                     <a href="https://forge.laravel.com" className="underline">
                                         Forge
                                     </a>
@@ -174,11 +174,11 @@ const Welcome = ({ canLogin, canRegister }) => {
                                     <a href="https://nova.laravel.com" className="underline">
                                         Nova
                                     </a>
-                                    {t('welcomePage.ecoText2')}{' '}
+                                    {t('pages.welcome.ecoText2')}{' '}
                                     <a href="https://envoyer.io" className="underline">
                                         Envoyer
                                     </a>{' '}
-                                    {t('welcomePage.ecoText3')}{' '}
+                                    {t('pages.welcome.ecoText3')}{' '}
                                     <a
                                         href="https://laravel.com/docs/billing"
                                         className="underline"
@@ -217,7 +217,7 @@ const Welcome = ({ canLogin, canRegister }) => {
                                     >
                                         Telescope
                                     </a>
-                                    {t('welcomePage.ecoText4')}
+                                    {t('pages.welcome.ecoText4')}
                                 </div>
                             </div>
                         </div>

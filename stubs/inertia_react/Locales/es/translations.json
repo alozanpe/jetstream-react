@@ -5,6 +5,7 @@
         "save": "Guardar",
         "cancel": "Cancelar",
         "nevermind": "Cancelar",
+        "create": "Crear",
         "error": "Whoops! Algo fue mal."
     },
     "pages": {
@@ -27,7 +28,7 @@
             "ecoText4": " y más."
         },
         "dashboard": {
-            "dashboard": "Dashboard",
+            "title": "Dashboard",
             "welcome": "Welcome to your Jetstream application!",
             "intro": "Laravel Jetstream provides a beautiful, robust starting point for your next Laravel application. Laravel is designed to help you build your application using a development environment that is simple, powerful, and enjoyable. We believe you should love expressing your creativity through programming, so we have spent time carefully crafting the Laravel ecosystem to be a breath of fresh air. We hope you love it.",
             "documentationHeader": "Documentation",
@@ -110,8 +111,22 @@
             "twoFactorAuthenticationForm": {
                 "enable": "Habilitar",
                 "disable": "Deshabilitar",
+                "title": "Autenticación de doble factor",
+                "description": "Añada seguridad adicional a su cuenta usando al autenticación de doble factor.",
+                "enabled": "Ha habilitado la autenticación de doble factor.",
+                "disabled": "No ha habilitado la autenticación de doble factor.",
+                "content": "Cuando la autenticación de doble factor está habilitada, se le pedirá token seguro y aleatorio durante la autenticación. Puede recuperar este token de la aplicación Google Authenticator de su teléfono.",
+                "qr": "La autenticación de doble factor ahora está habilitada. Escanee el siguiente Código QR utilizando la aplicación de autenticación de su teléfono.",
+                "recovery": "Guarde estos códigos de recuperación en un administrador de contraseñas seguro. Se pueden utilizar para recuperar el acceso a su cuenta si se pierde el dispositivo de autenticación de doble factor.",
                 "regenerateRecoveryCodes": "Regenerar códigos de recuperación",
                 "showRecoveryCodes": "Mostrar códigos de recuperación"
+            }
+        },
+        "api": {
+            "title": "API tokens",
+            "apiTokenManager": {
+                "title": "Create API Token",
+                "description": "API tokens allow third-party services to authenticate with our application on your behalf."
             }
         }
     },
