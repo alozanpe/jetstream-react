@@ -10,7 +10,7 @@ import Input from '@/Jetstream/Input';
 import Button from '@/Jetstream/Button';
 
 const ForgotPassword = () => {
-    const { errors, status } = usePage().props;
+    const { status } = usePage().props;
     const { t } = useTranslation();
     const [values, setValues] = useState({
         email: '',
@@ -35,7 +35,7 @@ const ForgotPassword = () => {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{{ status }}</div>}
 
-            <ValidationErrors className="mb-4" errors={errors} />
+            <ValidationErrors className="mb-4" />
 
             <form onSubmit={onSubmit}>
                 <div>

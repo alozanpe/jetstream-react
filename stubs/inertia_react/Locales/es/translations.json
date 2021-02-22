@@ -6,6 +6,8 @@
         "cancel": "Cancelar",
         "nevermind": "Cancelar",
         "create": "Crear",
+        "close": "Cerrar",
+        "delete": "Eliminar",
         "error": "Whoops! Algo fue mal."
     },
     "pages": {
@@ -73,6 +75,21 @@
             "confirmation": "Confirme la contraseña",
             "reset": "Restablecer"
         },
+        "verifyEmail": {
+            "resend": "Resend Verification Email",
+            "thanks": "Gracias por registrarte! Antes de comenzar, ¿podría verificar su dirección de correo electrónico haciendo clic en el enlace que le acabamos de enviar por correo electrónico? Si no recibió el correo electrónico, con mucho gusto le enviaremos otro.",
+            "linkSend": "Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionó durante el registro.",
+            "logout": "Cerrar sesión"
+        },
+        "twoFactorChallenge": {
+            "authCode": "Confirme el acceso a su cuenta ingresando el código de autenticación proporcionado por su aplicación de autenticación.",
+            "emergencyCode": "Confirme el acceso a su cuenta ingresando uno de sus códigos de recuperación.",
+            "useAuthCode": "Use un código de autenticación",
+            "useRecoveryCode": "Use un código de recuperación",
+            "login": "Login",
+            "code": "Código",
+            "recoveryCode": "Código de recuperación"
+        },
         "profile": {
             "title": "Perfil",
             "deleteUserForm": {
@@ -126,7 +143,26 @@
             "title": "API tokens",
             "apiTokenManager": {
                 "title": "Create API Token",
-                "description": "API tokens allow third-party services to authenticate with our application on your behalf."
+                "description": "API tokens allow third-party services to authenticate with our application on your behalf.",
+                "tokens": {
+                    "title": "Administrar API Tokens",
+                    "description": "Puede eliminar cualquiera de sus tokens existentes si ya no los necesita.",
+                    "lastUsed": "Último uso",
+                    "permissions": "Permisos",
+                    "delete": "Eliminar"
+                },
+                "displayingTokenModal": {
+                    "title": "API Token",
+                    "content": "Copie su nuevo API token. Por su seguridad, no se mostrará otra vez."
+                },
+                "managingPermissionsModal": {
+                    "title": "Permisos API Token",
+                    "content": "Copie su nuevo API token. Por su seguridad, no se mostrará otra vez."
+                },
+                "beingDeletedModal": {
+                    "title": "Delete API Token",
+                    "content": "Are you sure you would like to delete this API token?"
+                }
             }
         }
     },

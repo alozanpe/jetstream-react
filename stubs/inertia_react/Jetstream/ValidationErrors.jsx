@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { usePage } from '@inertiajs/inertia-react';
 
-const ValidationErrors = ({ errors, className }) => {
+const ValidationErrors = ({ className }) => {
+    const { errors } = usePage().props;
     const { t } = useTranslation();
 
-    if (Object.keys(errors).length > 0) {
+    const hasErrors = useMemo(() => {
+        return Object.keys(errors).length > 0;
+    }, [errors]);
+
+    if (hasErrors) {
         return (
             <div className={className}>
                 <div className="font-medium text-red-600">{t('validationErrors.title')}</div>
@@ -23,12 +29,10 @@ const ValidationErrors = ({ errors, className }) => {
 };
 
 ValidationErrors.propTypes = {
-    errors: PropTypes.shape({}),
     className: PropTypes.string,
 };
 
 ValidationErrors.defaultProps = {
-    errors: {},
     className: '',
 };
 

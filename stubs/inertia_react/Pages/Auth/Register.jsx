@@ -11,7 +11,7 @@ import Checkbox from '@/Jetstream/Checkbox';
 import Button from '@/Jetstream/Button';
 
 const Register = () => {
-    const { errors, jetstream } = usePage().props;
+    const { jetstream } = usePage().props;
     const { t } = useTranslation();
     const [values, setValues] = useState({
         name: '',
@@ -38,7 +38,7 @@ const Register = () => {
 
     return (
         <AuthenticationCard>
-            <ValidationErrors className="mb-4" errors={errors} />
+            <ValidationErrors className="mb-4" />
 
             <form onSubmit={onSubmit}>
                 <div>

@@ -10,7 +10,7 @@ import Input from '@/Jetstream/Input';
 import Button from '@/Jetstream/Button';
 
 const ResetPassword = () => {
-    const { errors, email, token } = usePage().props;
+    const { email, token } = usePage().props;
     const { t } = useTranslation();
     const [values, setValues] = useState({
         token,
@@ -34,7 +34,7 @@ const ResetPassword = () => {
 
     return (
         <AuthenticationCard>
-            <ValidationErrors className="mb-4" errors={errors} />
+            <ValidationErrors className="mb-4" />
 
             <form onSubmit={onSubmit}>
                 <div>

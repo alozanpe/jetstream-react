@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { usePage } from '@inertiajs/inertia-react';
 import { useTranslation } from 'react-i18next';
 
 import AuthenticationCard from '@/Jetstream/AuthenticationCard';
@@ -10,7 +9,6 @@ import Input from '@/Jetstream/Input';
 import Button from '@/Jetstream/Button';
 
 const ConfirmPassword = () => {
-    const { errors } = usePage().props;
     const { t } = useTranslation();
     const [values, setValues] = useState({
         password: '',
@@ -33,7 +31,7 @@ const ConfirmPassword = () => {
         <AuthenticationCard>
             <div className="mb-4 text-sm text-gray-600">{t('pages.confirmPassword.message')}</div>
 
-            <ValidationErrors className="mb-4" errors={errors} />
+            <ValidationErrors className="mb-4" />
 
             <form onSubmit={onSubmit}>
                 <div>

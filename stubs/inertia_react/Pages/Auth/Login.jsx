@@ -11,7 +11,7 @@ import Checkbox from '@/Jetstream/Checkbox';
 import Button from '@/Jetstream/Button';
 
 const Login = () => {
-    const { errors, canResetPassword, status } = usePage().props;
+    const { canResetPassword, status } = usePage().props;
     const { t } = useTranslation();
     const [values, setValues] = useState({
         email: '',
@@ -41,7 +41,7 @@ const Login = () => {
 
     return (
         <AuthenticationCard>
-            <ValidationErrors className="mb-4" errors={errors} />
+            <ValidationErrors className="mb-4" />
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
