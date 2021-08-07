@@ -67,6 +67,8 @@ class InstallCommand extends Command
             $this->installLivewireStack();
         } elseif ($this->argument('stack') === 'inertia') {
             $this->installInertiaStack();
+        } elseif ($this->argument('stack') === 'inertia_react') {
+            $this->installInertiaReactStack();
         }
 
         // Tests...
@@ -105,7 +107,7 @@ class InstallCommand extends Command
     protected function installLivewireStack()
     {
         // Install Livewire...
-        $this->requireComposerPackages('livewire/livewire:^2.0', 'laravel/sanctum:^2.6');
+        $this->requireComposerPackages('livewire/livewire:^2.5', 'laravel/sanctum:^2.6');
 
         // Sanctum...
         (new Process(['php', 'artisan', 'vendor:publish', '--provider=Laravel\Sanctum\SanctumServiceProvider', '--force'], base_path()))
@@ -121,12 +123,11 @@ class InstallCommand extends Command
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
             return [
-                '@tailwindcss/forms' => '^0.2.1',
-                '@tailwindcss/typography' => '^0.3.0',
-                'alpinejs' => '^2.7.3',
-                'autoprefixer' => '^10.0.2',
-                'postcss-import' => '^12.0.1',
-                'tailwindcss' => '^2.0.1',
+                '@tailwindcss/forms' => '^0.3.1',
+                '@tailwindcss/typography' => '^0.4.0',
+                'alpinejs' => '^3.0.6',
+                'postcss-import' => '^14.0.1',
+                'tailwindcss' => '^2.2.2',
             ] + $packages;
         });
 
@@ -158,6 +159,9 @@ class InstallCommand extends Command
 
         // Models...
         copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+
+        // Factories...
+        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
         // Actions...
         copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
@@ -263,19 +267,18 @@ EOF;
     protected function installInertiaStack()
     {
         // Install Inertia...
-        $this->requireComposerPackages('inertiajs/inertia-laravel:^0.3.5', 'laravel/sanctum:^2.6', 'tightenco/ziggy:^1.0');
+        $this->requireComposerPackages('inertiajs/inertia-laravel:^0.4.3', 'laravel/sanctum:^2.6', 'tightenco/ziggy:^1.0');
 
         // Install NPM packages...
         $this->updateNodePackages(function ($packages) {
             return [
-                '@inertiajs/inertia' => '^0.8.4',
-                '@inertiajs/inertia-vue3' => '^0.3.5',
-                '@inertiajs/progress' => '^0.2.4',
+                '@inertiajs/inertia' => '^0.10.0',
+                '@inertiajs/inertia-vue3' => '^0.5.1',
+                '@inertiajs/progress' => '^0.2.6',
                 '@tailwindcss/forms' => '^0.2.1',
                 '@tailwindcss/typography' => '^0.3.0',
                 'postcss-import' => '^12.0.1',
                 'tailwindcss' => '^2.0.1',
-                'autoprefixer' => '^10.0.2',
                 'vue' => '^3.0.5',
                 '@vue/compiler-sfc' => '^3.0.5',
                 'vue-loader' => '^16.1.2',
@@ -330,6 +333,9 @@ EOF;
 
         // Models...
         copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+
+        // Factories...
+        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
         // Actions...
         copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
@@ -389,6 +395,164 @@ EOF;
     }
 
     /**
+     * Install the Inertia stack into the application.
+     *
+     * @return void
+     */
+    protected function installInertiaReactStack()
+    {
+        // Install Inertia...
+        $this->requireComposerPackages('inertiajs/inertia-laravel:^0.4.3', 'laravel/sanctum:^2.6', 'tightenco/ziggy:^1.0');
+
+        // Install NPM packages...
+        $this->updateNodePackages(function ($packages) {
+            return [
+                '@babel/plugin-proposal-class-properties' => '^7.12.1',
+                '@babel/plugin-syntax-dynamic-import' => '^7.8.3',
+                '@babel/plugin-syntax-jsx' => '^7.12.1',
+                '@babel/preset-react' => '^7.12.10',
+                '@fullhuman/postcss-purgecss' => '^3.1.3',
+                '@inertiajs/inertia' => '^0.10.0',
+                '@inertiajs/inertia-react' => '^0.5.1',
+                '@inertiajs/progress' => '^0.2.6',
+                '@reduxjs/toolkit' => '^1.5.0',
+                '@tailwindcss/forms' => '^0.2.1',
+                '@tailwindcss/typography' => '^0.3.0',
+                'autoprefixer' => '^10.0.2',
+                'axios' => '^0.21',
+                'babel-eslint' => '^10.1.0',
+                'eslint' => '^7.17.0',
+                'eslint-plugin-react' => '^7.22.0',
+                'i18next' => '^19.8.4',
+                'i18next-browser-languagedetector' => '^6.0.1',
+                'laravel-mix' => '^6.0.6',
+                'lodash' => '^4.17.19',
+                'postcss' => '^8.1.14',
+                'postcss-import' => '^12.0.1',
+                'postcss-nesting' => '^7.0.1',
+                'prettier' => '^2.2.1',
+                'prop-types' => '^15.7.2',
+                'react' => '^17.0.1',
+                'react-dom' => '^17.0.1',
+                'react-helmet' => '^6.1.0',
+                'react-i18next' => '^11.8.5',
+                'react-redux' => '^7.2.2',
+                'react-transition-group' => '^4.4.1',
+                'tailwindcss' => '^2.0.1',
+            ] + $packages;
+        });
+
+        // Sanctum...
+        (new Process(['php', 'artisan', 'vendor:publish', '--provider=Laravel\Sanctum\SanctumServiceProvider', '--force'], base_path()))
+                ->setTimeout(null)
+                ->run(function ($type, $output) {
+                    $this->output->write($output);
+                });
+
+        // Tailwind Configuration...
+        copy(__DIR__.'/../../stubs/inertia_react/tailwind.config.js', base_path('tailwind.config.js'));
+        copy(__DIR__.'/../../stubs/inertia_react/webpack.mix.js', base_path('webpack.mix.js'));
+        copy(__DIR__.'/../../stubs/inertia_react/webpack.config.js', base_path('webpack.config.js'));
+
+        // Directories...
+        (new Filesystem)->ensureDirectoryExists(app_path('Actions/Fortify'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Actions/Jetstream'));
+        (new Filesystem)->ensureDirectoryExists(public_path('css'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('css'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Jetstream'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Layouts'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages/API'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages/Auth'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages/Profile'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('views'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('markdown'));
+
+        (new Filesystem)->deleteDirectory(resource_path('sass'));
+
+        // Terms Of Service / Privacy Policy...
+        copy(__DIR__.'/../../stubs/resources/markdown/terms.md', resource_path('markdown/terms.md'));
+        copy(__DIR__.'/../../stubs/resources/markdown/policy.md', resource_path('markdown/policy.md'));
+
+        // Service Providers...
+        copy(__DIR__.'/../../stubs/app/Providers/JetstreamServiceProvider.php', app_path('Providers/JetstreamServiceProvider.php'));
+
+        $this->installServiceProviderAfter('FortifyServiceProvider', 'JetstreamServiceProvider');
+
+        // Middleware...
+        (new Process(['php', 'artisan', 'inertia:middleware', 'HandleInertiaRequests', '--force'], base_path()))
+            ->setTimeout(null)
+            ->run(function ($type, $output) {
+                $this->output->write($output);
+            });
+
+        $this->installMiddlewareAfter('SubstituteBindings::class', '\App\Http\Middleware\HandleInertiaRequests::class');
+
+        // Models...
+        copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+
+        // Factories...
+        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
+
+        // Actions...
+        copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
+        copy(__DIR__.'/../../stubs/app/Actions/Fortify/UpdateUserProfileInformation.php', app_path('Actions/Fortify/UpdateUserProfileInformation.php'));
+        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/DeleteUser.php', app_path('Actions/Jetstream/DeleteUser.php'));
+
+        // Blade Views...
+        copy(__DIR__.'/../../stubs/inertia_react/resources/views/app.blade.php', resource_path('views/app.blade.php'));
+
+        if (file_exists(resource_path('views/welcome.blade.php'))) {
+            unlink(resource_path('views/welcome.blade.php'));
+        }
+
+        // Inertia Pages...
+        copy(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/Dashboard.jsx', resource_path('js/Pages/Dashboard.jsx'));
+        copy(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/PrivacyPolicy.jsx', resource_path('js/Pages/PrivacyPolicy.jsx'));
+        copy(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/TermsOfService.jsx', resource_path('js/Pages/TermsOfService.jsx'));
+        
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/Welcome', resource_path('js/Pages/Welcome'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Store', resource_path('js/Store'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Locales', resource_path('js/Locales'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Jetstream', resource_path('js/Jetstream'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Layouts', resource_path('js/Layouts'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/API', resource_path('js/Pages/API'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/Auth', resource_path('js/Pages/Auth'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/Profile', resource_path('js/Pages/Profile'));
+
+        // Routes...
+        $this->replaceInFile('auth:api', 'auth:sanctum', base_path('routes/api.php'));
+
+        copy(__DIR__.'/../../stubs/inertia_react/routes/web.php', base_path('routes/web.php'));
+
+        // Assets...
+        copy(__DIR__.'/../../stubs/public/css/app.css', public_path('css/app.css'));
+        copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
+        copy(__DIR__.'/../../stubs/inertia_react/resources/js/app.js', resource_path('js/app.js'));
+        copy(__DIR__.'/../../stubs/inertia_react/resources/js/bootstrap.js', resource_path('js/bootstrap.js'));
+        copy(__DIR__.'/../../stubs/inertia_react/resources/js/i18n.js', resource_path('js/i18n.js'));
+
+        // Tests...
+        copy(__DIR__.'/../../stubs/tests/inertia/ApiTokenPermissionsTest.php', base_path('tests/Feature/ApiTokenPermissionsTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/BrowserSessionsTest.php', base_path('tests/Feature/BrowserSessionsTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/CreateApiTokenTest.php', base_path('tests/Feature/CreateApiTokenTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/DeleteAccountTest.php', base_path('tests/Feature/DeleteAccountTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/DeleteApiTokenTest.php', base_path('tests/Feature/DeleteApiTokenTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/ProfileInformationTest.php', base_path('tests/Feature/ProfileInformationTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/TwoFactorAuthenticationSettingsTest.php', base_path('tests/Feature/TwoFactorAuthenticationSettingsTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/UpdatePasswordTest.php', base_path('tests/Feature/UpdatePasswordTest.php'));
+
+        // Teams...
+        if ($this->option('teams')) {
+            $this->installInertiaReactTeamStack();
+        }
+
+        $this->line('');
+        $this->info('Inertia react scaffolding installed successfully.');
+        $this->comment('Please execute "npm install && npm run dev" to build your assets.');
+    }
+
+    /**
      * Install the Inertia team stack into the application.
      *
      * @return void
@@ -400,6 +564,31 @@ EOF;
 
         // Pages...
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Pages/Teams', resource_path('js/Pages/Teams'));
+
+        // Tests...
+        copy(__DIR__.'/../../stubs/tests/inertia/CreateTeamTest.php', base_path('tests/Feature/CreateTeamTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/DeleteTeamTest.php', base_path('tests/Feature/DeleteTeamTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/InviteTeamMemberTest.php', base_path('tests/Feature/InviteTeamMemberTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/LeaveTeamTest.php', base_path('tests/Feature/LeaveTeamTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/RemoveTeamMemberTest.php', base_path('tests/Feature/RemoveTeamMemberTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/UpdateTeamMemberRoleTest.php', base_path('tests/Feature/UpdateTeamMemberRoleTest.php'));
+        copy(__DIR__.'/../../stubs/tests/inertia/UpdateTeamNameTest.php', base_path('tests/Feature/UpdateTeamNameTest.php'));
+
+        $this->ensureApplicationIsTeamCompatible();
+    }
+
+    /**
+     * Install the Inertia react team stack into the application.
+     *
+     * @return void
+     */
+    protected function installInertiaTeamStack()
+    {
+        // Directories...
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages/Profile'));
+
+        // Pages...
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia_react/resources/js/Pages/Teams', resource_path('js/Pages/Teams'));
 
         // Tests...
         copy(__DIR__.'/../../stubs/tests/inertia/CreateTeamTest.php', base_path('tests/Feature/CreateTeamTest.php'));
