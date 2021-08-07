@@ -8,7 +8,8 @@
         "create": "Crear",
         "close": "Cerrar",
         "delete": "Eliminar",
-        "error": "Whoops! Algo fue mal."
+        "error": "Whoops! Algo fue mal.",
+        "created": "Creado."
     },
     "pages": {
         "welcome": {

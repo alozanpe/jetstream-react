@@ -1,11 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { usePage } from '@inertiajs/inertia-react';
 
 import AppLayout from '@/Layouts/AppLayout';
 import ApiTokenManager from '@/Pages/API/Partials/ApiTokenManager';
 
-const Index = ({ tokens, availablePermissions, defaultPermissions }) => {
+const Index = () => {
+    const { tokens, availablePermissions, defaultPermissions } = usePage().props;
     const { t } = useTranslation();
 
     return (
@@ -24,18 +25,6 @@ const Index = ({ tokens, availablePermissions, defaultPermissions }) => {
             </div>
         </AppLayout>
     );
-};
-
-Index.propTypes = {
-    tokens: PropTypes.arrayOf(PropTypes.string),
-    availablePermissions: PropTypes.arrayOf(PropTypes.string),
-    defaultPermissions: PropTypes.arrayOf(PropTypes.string),
-};
-
-Index.defaultProps = {
-    tokens: [],
-    availablePermissions: [],
-    defaultPermissions: [],
 };
 
 export default Index;

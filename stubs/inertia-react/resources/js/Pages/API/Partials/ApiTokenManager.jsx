@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Inertia } from '@inertiajs/inertia';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { usePage } from '@inertiajs/inertia-react';
+import { usePage, useForm } from '@inertiajs/inertia-react';
 
 import FormSection from '@/Jetstream/FormSection';
 import ActionSection from '@/Jetstream/ActionSection';
@@ -17,94 +15,76 @@ import Checkbox from '@/Jetstream/Checkbox';
 import SecondaryButton from '@/Jetstream/SecondaryButton';
 import SectionBorder from '@/Jetstream/SectionBorder';
 
-const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) => {
-    const { jetstream } = usePage().props;
+const ApiTokenManager = () => {
+    const { jetstream, tokens, availablePermissions, defaultPermissions } = usePage().props;
     const { t } = useTranslation();
-    const [createApiTokenForm, setCreateApiTokenForm] = useState({
-        name: '',
-        permissions: defaultPermissions,
-        recentlySuccessful: false,
-        processing: false,
-        errors: null,
-    });
-    const [updateApiTokenForm, setUpdateApiTokenForm] = useState({
-        permissions: [],
-        processing: false,
-    });
-    const [deleteApiTokenForm, setDeleteApiTokenForm] = useState({
-        processing: false,
-    });
     const [displayingToken, setDisplayingToken] = useState(false);
     const [managingPermissionsFor, setManagingPermissionsFor] = useState(null);
     const [apiTokenBeingDeleted, setApiTokenBeingDeleted] = useState(null);
 
+    const createApiTokenForm = useForm({
+        name: '',
+        permissions: defaultPermissions,
+    });
+
+    const updateApiTokenForm = useForm({
+        permissions: [],
+    });
+
+    const deleteApiTokenForm = useForm();
+
     const createApiToken = (e) => {
-        e.preventDefault();
-        
-        setCreateApiTokenForm({
-            ...createApiTokenForm,
-            processing: true,
-        });
+        e.preventDefault()
 
-        Inertia.post(
-            route('api-tokens.store'),
-            {
-                name: createApiTokenForm.name,
-                permissions: createApiTokenForm.permissions,
-            },
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDisplayingToken(true);
-                    setCreateApiTokenForm({
-                        name: '',
-                        permissions: defaultPermissions,
-                        recentlySuccessful: true,
-                    });
-                },
-                onError: (errors) => {
-                    setCreateApiTokenForm({
-                        ...createApiTokenForm,
-                        errors,
-                    });
-                },
-                onFinish: () => {
-                    setCreateApiTokenForm({
-                        ...createApiTokenForm,
-                        processing: false,
-                    });
-                },
+        createApiTokenForm.post(route('api-tokens.store'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                setDisplayingToken(true);
+                createApiTokenForm.reset();
             }
-        );
-    };
-
-    const manageApiTokenPermissions = (token) => {
-        setUpdateApiTokenForm({ permissions: token.abilities });
-        setManagingPermissionsFor(token);
+        });
     };
 
     const updateApiToken = () => {
-        Inertia.put(
-            route('api-tokens.update', managingPermissionsFor),
-            { ...updateApiTokenForm },
-            {
-                preserveScroll: true,
-                preserveState: true,
-                onSuccess: () => setManagingPermissionsFor(null),
-            }
-        );
+        updateApiTokenForm.put(route('api-tokens.update', managingPermissionsFor), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => setManagingPermissionsFor(null),
+        });
+    };
+
+    const deleteApiToken = () => {
+        deleteApiTokenForm.delete(route('api-tokens.destroy', apiTokenBeingDeleted), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => setApiTokenBeingDeleted(null),
+        });
+    };
+
+    const manageApiTokenPermissions = (token) => {
+        updateApiTokenForm.setData('permissions', token.abilities);
+        setManagingPermissionsFor(token);
     };
 
     const confirmApiTokenDeletion = (token) => {
         setApiTokenBeingDeleted(token);
     };
 
-    const deleteApiToken = () => {
-        Inertia.delete(route('api-tokens.destroy', apiTokenBeingDeleted), {
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: () => setApiTokenBeingDeleted(null),
-        });
+    const onUpdatePermissions = (e, form = 'create') => {
+        const apiTokenForm = form === 'create' ? createApiTokenForm : updateApiTokenForm;
+        const prevPermissions = apiTokenForm.data.permissions;
+
+        if (e.target.checked) {
+            apiTokenForm.setData('permissions', prevPermissions.concat(e.target.id));
+        } else {
+            const index = prevPermissions.indexOf(e.target.id);
+            
+            if (index > -1) {
+                prevPermissions.splice(index, 1);
+            }
+
+            apiTokenForm.setData('permissions', prevPermissions);
+        }
     };
 
     return (
@@ -112,15 +92,17 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
             {/* Generate API Token */}
             <FormSection onSubmit={createApiToken}>
                 <FormSection.Title>{t('pages.api.apiTokenManager.title')}</FormSection.Title>
+
                 <FormSection.Description>
                     {t('pages.api.apiTokenManager.description')}
                 </FormSection.Description>
+                
                 <FormSection.Form>
                     {/* Token Name */}
                     <div className="col-span-6 sm:col-span-4">
                         <Label htmlFor="name" value="Name" />
-                        <Input id="name" type="text" className="mt-1 block w-full" value={createApiTokenForm.name} onChange={(e) => setCreateApiTokenForm({ ...createApiTokenForm, name: e.target.value })} />
-                        <InputError message={createApiTokenForm.errors?.name} className="mt-2" />
+                        <Input id="name" type="text" className="mt-1 block w-full" value={createApiTokenForm.data.name} onChange={e => createApiTokenForm.setData('name', e.target.value)} />
+                        <InputError message={createApiTokenForm.errors.name} className="mt-2" />
                     </div>
                     {/* Token Permissions */}
                     <div className="col-span-6" v-if="availablePermissions.length > 0">
@@ -131,8 +113,8 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                                 <label className="flex items-center" key={permission}>
                                     <Checkbox
                                         id={permission}
-                                        name={permission}
-                                        value={createApiTokenForm.permissions.includes(permission)}
+                                        checked={createApiTokenForm.data.permissions.includes(permission)}
+                                        onChange={onUpdatePermissions}
                                     />
                                     <span className="ml-2 text-sm text-gray-600">{permission}</span>
                                 </label>
@@ -140,9 +122,10 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                         </div>
                     </div>
                 </FormSection.Form>
+
                 <FormSection.Actions>
                     <ActionMessage on={createApiTokenForm.recentlySuccessful} className="mr-3">
-                        Created.
+                        {t('app.created')}
                     </ActionMessage>
 
                     <Button
@@ -152,16 +135,20 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                     />
                 </FormSection.Actions>
             </FormSection>
+
             {tokens.length > 0 && (
                 <div>
                     <SectionBorder />
+
                     <ActionSection>
                         <ActionSection.Title>
                             {t('pages.api.apiTokenManager.tokens.title')}
                         </ActionSection.Title>
+
                         <ActionSection.Description>
                             {t('pages.api.apiTokenManager.tokens.description')}
                         </ActionSection.Description>
+                        
                         <ActionSection.Content>
                             <div className="space-y-6">
                                 {tokens.map((token) => (
@@ -215,6 +202,7 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                     <DialogModal.Title>
                         {t('pages.api.apiTokenManager.displayingToken.title')}
                     </DialogModal.Title>
+                    
                     <DialogModal.Content>
                         <div>{t('pages.api.apiTokenManager.displayingToken.content')}</div>
 
@@ -224,6 +212,7 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                             </div>
                         )}
                     </DialogModal.Content>
+
                     <DialogModal.Footer>
                         <SecondaryButton
                             text="app.close"
@@ -239,15 +228,16 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                     <DialogModal.Title>
                         {t('pages.api.apiTokenManager.managingPermissionsModal.title')}
                     </DialogModal.Title>
+
                     <DialogModal.Content>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {availablePermissions.map((permission) => (
                                 <div key={permission}>
                                     <label className="flex items-center">
                                         <Checkbox
-                                            value={updateApiTokenForm.permissions.includes(
-                                                permission
-                                            )}
+                                            id={permission}
+                                            checked={updateApiTokenForm.data.permissions.includes(permission)}
+                                            onChange={(e) => onUpdatePermissions(e, 'update')}
                                         />
                                         <span className="ml-2 text-sm text-gray-600">
                                             {permission}
@@ -257,6 +247,7 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                             ))}
                         </div>
                     </DialogModal.Content>
+
                     <DialogModal.Footer>
                         <SecondaryButton
                             text="app.cancel"
@@ -278,9 +269,11 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                     <ConfirmationModal.Title>
                         {t('pages.api.apiTokenManager.beingDeletedModal.title')}
                     </ConfirmationModal.Title>
+
                     <ConfirmationModal.Content>
                         {t('pages.api.apiTokenManager.beingDeletedModal.content')}
                     </ConfirmationModal.Content>
+                    
                     <ConfirmationModal.Footer>
                         <SecondaryButton
                             text="app.cancel"
@@ -297,18 +290,6 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
             )}
         </React.Fragment>
     );
-};
-
-ApiTokenManager.propTypes = {
-    tokens: PropTypes.arrayOf(PropTypes.string),
-    availablePermissions: PropTypes.arrayOf(PropTypes.string),
-    defaultPermissions: PropTypes.arrayOf(PropTypes.string),
-};
-
-ApiTokenManager.defaultProps = {
-    tokens: [],
-    availablePermissions: [],
-    defaultPermissions: [],
 };
 
 export default ApiTokenManager;
