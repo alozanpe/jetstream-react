@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { usePage, InertiaLink } from '@inertiajs/inertia-react';
+import { usePage, Link } from '@inertiajs/inertia-react';
 import { useTranslation } from 'react-i18next';
 
 import './welcome.css';
@@ -14,22 +14,22 @@ const Welcome = ({ canLogin, canRegister }) => {
             {canLogin && (
                 <div className="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     {user ? (
-                        <InertiaLink href="/dashboard" className="text-sm text-gray-700 underline">
+                        <Link href="/dashboard" className="text-sm text-gray-700 underline">
                             {t('pages.welcome.links.dashboard')}
-                        </InertiaLink>
+                        </Link>
                     ) : (
                         <React.Fragment>
-                            <InertiaLink href="/login" className="text-sm text-gray-700 underline">
+                            <Link href="/login" className="text-sm text-gray-700 underline">
                                 {t('pages.welcome.links.login')}
-                            </InertiaLink>
+                            </Link>
 
                             {canRegister && (
-                                <InertiaLink
+                                <Link
                                     href="/register"
                                     className="ml-4 text-sm text-gray-700 underline"
                                 >
                                     {t('pages.welcome.links.register')}
-                                </InertiaLink>
+                                </Link>
                             )}
                         </React.Fragment>
                     )}

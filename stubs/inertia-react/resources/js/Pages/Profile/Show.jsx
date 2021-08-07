@@ -4,7 +4,7 @@ import { usePage } from '@inertiajs/inertia-react';
 
 import AppLayout from '@/Layouts/AppLayout';
 import SectionBorder from '@/Jetstream/SectionBorder';
-import DeleteUserForm from '@/Pages/Profile/DeleteUserForm';
+import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm';
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm';

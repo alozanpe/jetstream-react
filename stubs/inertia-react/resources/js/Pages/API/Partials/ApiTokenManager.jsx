@@ -28,7 +28,7 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
         errors: null,
     });
     const [updateApiTokenForm, setUpdateApiTokenForm] = useState({
-        permission: [],
+        permissions: [],
         processing: false,
     });
     const [deleteApiTokenForm, setDeleteApiTokenForm] = useState({
@@ -38,7 +38,9 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
     const [managingPermissionsFor, setManagingPermissionsFor] = useState(null);
     const [apiTokenBeingDeleted, setApiTokenBeingDeleted] = useState(null);
 
-    const createApiToken = () => {
+    const createApiToken = (e) => {
+        e.preventDefault();
+        
         setCreateApiTokenForm({
             ...createApiTokenForm,
             processing: true,
@@ -47,8 +49,8 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
         Inertia.post(
             route('api-tokens.store'),
             {
-                name: createApiToken.name,
-                permission: createApiToken.permission,
+                name: createApiTokenForm.name,
+                permissions: createApiTokenForm.permissions,
             },
             {
                 preserveScroll: true,
@@ -77,7 +79,7 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
     };
 
     const manageApiTokenPermissions = (token) => {
-        setUpdateApiTokenForm({ permission: token.abilities });
+        setUpdateApiTokenForm({ permissions: token.abilities });
         setManagingPermissionsFor(token);
     };
 
@@ -117,7 +119,7 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                     {/* Token Name */}
                     <div className="col-span-6 sm:col-span-4">
                         <Label htmlFor="name" value="Name" />
-                        <Input id="name" type="text" className="mt-1 block w-full" />
+                        <Input id="name" type="text" className="mt-1 block w-full" value={createApiTokenForm.name} onChange={(e) => setCreateApiTokenForm({ ...createApiTokenForm, name: e.target.value })} />
                         <InputError message={createApiTokenForm.errors?.name} className="mt-2" />
                     </div>
                     {/* Token Permissions */}
@@ -243,7 +245,7 @@ const ApiTokenManager = ({ tokens, availablePermissions, defaultPermissions }) =
                                 <div key={permission}>
                                     <label className="flex items-center">
                                         <Checkbox
-                                            value={updateApiTokenForm.permissions.contains(
+                                            value={updateApiTokenForm.permissions.includes(
                                                 permission
                                             )}
                                         />
