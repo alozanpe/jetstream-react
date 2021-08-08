@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Inertia } from '@inertiajs/inertia';
-import { usePage } from '@inertiajs/inertia-react';
+import { usePage, useForm } from '@inertiajs/inertia-react';
 
 import ActionSection from '@/Jetstream/ActionSection';
 import Button from '@/Jetstream/Button';
@@ -14,40 +12,43 @@ import InputError from '@/Jetstream/InputError';
 
 import useApp from '@/Store/app/app-actions';
 
-const LogoutOtherBrowserSessionsForm = ({ sessions }) => {
+const LogoutOtherBrowserSessionsForm = () => {
     const { t } = useTranslation();
-    const { errors } = usePage().props;
+    const { errors, sessions } = usePage().props;
     const { doToggleModal } = useApp();
-    const [password, setPassword] = useState('');
     const [confirmingLogout, setConfirmingLogout] = useState(false);
-    const [formProcessing, setFormProcessing] = useState(false);
+
+    const form = useForm({
+        password: '',
+    });
+
+    const closeModal = () => {
+        setConfirmingLogout(false);
+
+        form.reset();
+    };
+
+    const confirmLogout = () => {
+        setConfirmingLogout(true);
+        doToggleModal();
+    };
 
     const logoutOtherBrowserSessions = () => {
-        if (password) {
-            setFormProcessing(true);
-
-            Inertia.delete(route('other-browser-sessions.destroy'), {
-                data: {
-                    password,
-                },
-                preserveScroll: true,
-                onSuccess: () => doToggleModal(),
-                onFinish: () => {
-                    setPassword('');
-                    setFormProcessing(false);
-                },
-            });
-        }
+        form.delete(route('other-browser-sessions.destroy'), {
+            preserveScroll: true,
+            onSuccess: () => closeModal(),
+            onFinish: () => form.reset(),
+        });
     };
 
     return (
         <ActionSection>
-            <ActionSection.Title>
-                {t('pages.profile.logoutOtherSessionsForm.title')}
-            </ActionSection.Title>
+            <ActionSection.Title>{t('pages.profile.logoutOtherSessionsForm.title')}</ActionSection.Title>
+
             <ActionSection.Description>
                 {t('pages.profile.logoutOtherSessionsForm.description')}
             </ActionSection.Description>
+
             <ActionSection.Content>
                 <div className="max-w-xl text-sm text-gray-600">
                     {t('pages.profile.logoutOtherSessionsForm.content')}
@@ -98,15 +99,11 @@ const LogoutOtherBrowserSessionsForm = ({ sessions }) => {
                                             {', '}
                                             {session.is_current_device ? (
                                                 <span className="text-green-500 font-semibold">
-                                                    {t(
-                                                        'pages.profile.logoutOtherSessionsForm.this'
-                                                    )}
+                                                    {t('pages.profile.logoutOtherSessionsForm.this')}
                                                 </span>
                                             ) : (
                                                 <span>
-                                                    {t(
-                                                        'pages.profile.logoutOtherSessionsForm.last'
-                                                    )}{' '}
+                                                    {t('pages.profile.logoutOtherSessionsForm.last')}{' '}
                                                     {session.last_active}
                                                 </span>
                                             )}
@@ -129,9 +126,8 @@ const LogoutOtherBrowserSessionsForm = ({ sessions }) => {
                 {/* Logout Other Devices Confirmation Modal */}
                 {confirmingLogout && (
                     <DialogModal>
-                        <DialogModal.Title>
-                            {t('pages.profile.logoutOtherSessionsForm.logoutOther')}
-                        </DialogModal.Title>
+                        <DialogModal.Title>{t('pages.profile.logoutOtherSessionsForm.logoutOther')}</DialogModal.Title>
+
                         <DialogModal.Content>
                             {t('pages.profile.logoutOtherSessionsForm.confirm')}
                             <div className="mt-4">
@@ -139,17 +135,17 @@ const LogoutOtherBrowserSessionsForm = ({ sessions }) => {
                                     id="password"
                                     type="password"
                                     className="mt-1 block w-3/4"
-                                    placeholder={t(
-                                        'pages.profile.logoutOtherSessionsForm.passwordPlaceholder'
-                                    )}
-                                    value={password}
+                                    placeholder={t('pages.profile.logoutOtherSessionsForm.passwordPlaceholder')}
                                     required
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    autoFocus
+                                    value={form.data.password}
+                                    onChange={(e) => form.setData('password', e.target.value)}
                                 />
 
                                 <InputError message={errors.password} className="mt-2" />
                             </div>
                         </DialogModal.Content>
+
                         <DialogModal.Footer>
                             <SecondaryButton
                                 text={t('app.nevermind')}
@@ -159,10 +155,10 @@ const LogoutOtherBrowserSessionsForm = ({ sessions }) => {
                                 }}
                             />
                             <DangerButton
-                                className={`${formProcessing ? 'opacity-25' : ''} ml-2`}
+                                className={`${form.processing ? 'opacity-25' : ''} ml-2`}
                                 text={t('pages.profile.logoutOtherSessionsForm.logoutOther')}
-                                onClick={() => logoutOtherBrowserSessions()}
-                                disabled={formProcessing}
+                                onClick={logoutOtherBrowserSessions}
+                                disabled={form.processing}
                             />
                         </DialogModal.Footer>
                     </DialogModal>
@@ -170,14 +166,6 @@ const LogoutOtherBrowserSessionsForm = ({ sessions }) => {
             </ActionSection.Content>
         </ActionSection>
     );
-};
-
-LogoutOtherBrowserSessionsForm.propTypes = {
-    sessions: PropTypes.array,
-};
-
-LogoutOtherBrowserSessionsForm.defaultProps = {
-    sessions: [],
 };
 
 export default LogoutOtherBrowserSessionsForm;

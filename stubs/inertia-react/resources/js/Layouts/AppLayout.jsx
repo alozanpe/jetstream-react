@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { usePage, InertiaLink } from '@inertiajs/inertia-react';
+import { usePage, Link } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
 import { useTranslation } from 'react-i18next';
 
@@ -46,9 +46,9 @@ const AppLayout = ({ children }) => {
                         <div className="flex justify-between h-16">
                             <div className="flex">
                                 <div className="flex-shrink-0 flex items-center">
-                                    <InertiaLink href={route('dashboard')}>
+                                    <Link href={route('dashboard')}>
                                         <ApplicationMark className="block h-9 w-auto" />
-                                    </InertiaLink>
+                                    </Link>
                                 </div>
 
                                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">

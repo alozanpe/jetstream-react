@@ -65,12 +65,12 @@ const TwoFactorAuthenticationForm = () => {
 
     return (
         <ActionSection>
-            <ActionSection.Title>
-                {t('pages.profile.twoFactorAuthenticationForm.title')}
-            </ActionSection.Title>
+            <ActionSection.Title>{t('pages.profile.twoFactorAuthenticationForm.title')}</ActionSection.Title>
+
             <ActionSection.Description>
                 {t('pages.profile.twoFactorAuthenticationForm.description')}
             </ActionSection.Description>
+
             <ActionSection.Content>
                 {twoFactorEnabled() ? (
                     <h3 className="text-lg font-medium text-gray-900">
@@ -91,9 +91,7 @@ const TwoFactorAuthenticationForm = () => {
                         {qrCode && (
                             <div>
                                 <div className="mt-4 max-w-xl text-sm text-gray-600">
-                                    <p className="font-semibold">
-                                        {t('pages.profile.twoFactorAuthenticationForm.qr')}
-                                    </p>
+                                    <p className="font-semibold">{t('pages.profile.twoFactorAuthenticationForm.qr')}</p>
                                 </div>
 
                                 <div

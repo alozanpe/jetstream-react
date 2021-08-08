@@ -1,18 +1,20 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { Inertia } from '@inertiajs/inertia';
+import { usePage, useForm, Head, Link } from '@inertiajs/inertia-react';
 import { useTranslation } from 'react-i18next';
-import { InertiaLink } from '@inertiajs/inertia-react';
 
 import AuthenticationCard from '@/Jetstream/AuthenticationCard';
 import Button from '@/Jetstream/Button';
 
-const VerifyEmail = ({ status }) => {
+const VerifyEmail = () => {
     const { t } = useTranslation();
+    const { status } = usePage().props;
 
-    const submit = (e) => {
+    const form = useForm();
+
+    const onSubmit = (e) => {
         e.preventDefault();
-        Inertia.post(route('verification.send'));
+
+        form.post(route('verification.send'));
     };
 
     const verificationLinkSent = useMemo(() => {
@@ -20,43 +22,37 @@ const VerifyEmail = ({ status }) => {
     }, [status]);
 
     return (
-        <AuthenticationCard>
-            <div className="mb-4 text-sm text-gray-600">{t('pages.verifyEmail.thanks')}</div>
+        <React.Fragment>
+            <Head title="Email Verification" />
 
-            {verificationLinkSent && (
-                <div className="mb-4 font-medium text-sm text-green-600">
-                    {t('pages.verifyEmail.linkSend')}
-                </div>
-            )}
+            <AuthenticationCard>
+                <div className="mb-4 text-sm text-gray-600">{t('pages.verifyEmail.thanks')}</div>
 
-            <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
-                    <Button
-                        className="{ 'opacity-25': form.processing }"
-                        disabled="form.processing"
-                        text="pages.verifyEmail.resend"
-                    />
+                {verificationLinkSent && (
+                    <div className="mb-4 font-medium text-sm text-green-600">{t('pages.verifyEmail.linkSend')}</div>
+                )}
 
-                    <InertiaLink
-                        href={route('logout')}
-                        method="post"
-                        as="button"
-                        className="underline text-sm text-gray-600 hover:text-gray-900"
-                    >
-                        {t('pages.verifyEmail.logout')}
-                    </InertiaLink>
-                </div>
-            </form>
-        </AuthenticationCard>
+                <form onSubmit={onSubmit}>
+                    <div className="mt-4 flex items-center justify-between">
+                        <Button
+                            className={`${form.processing ? 'opacity-25' : ''}`}
+                            disabled={form.processing}
+                            text="pages.verifyEmail.resend"
+                        />
+
+                        <Link
+                            href={route('logout')}
+                            method="post"
+                            as="button"
+                            className="underline text-sm text-gray-600 hover:text-gray-900"
+                        >
+                            {t('pages.verifyEmail.logout')}
+                        </Link>
+                    </div>
+                </form>
+            </AuthenticationCard>
+        </React.Fragment>
     );
-};
-
-VerifyEmail.propTypes = {
-    status: PropTypes.string,
-};
-
-VerifyEmail.defaultProps = {
-    status: '',
 };
 
 export default VerifyEmail;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 
-const ActionMessage = ({ on, children }) => {
+const ActionMessage = ({ on, children, className }) => {
     const defaultStyle = {
         transition: `opacity 500ms ease-in`,
         opacity: 1,
@@ -32,7 +32,7 @@ const ActionMessage = ({ on, children }) => {
                             ...transitionStyles[state],
                         }}
                     >
-                        <div className="text-sm text-gray-600">{children}</div>
+                        <div className={`text-sm text-gray-600 ${className}`}>{children}</div>
                     </div>
                 )}
             </Transition>
@@ -42,15 +42,13 @@ const ActionMessage = ({ on, children }) => {
 
 ActionMessage.propTypes = {
     on: PropTypes.bool,
-    children: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.string,
-    ]).isRequired,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.string]).isRequired,
+    className: PropTypes.string,
 };
 
 ActionMessage.defaultProps = {
     on: false,
+    className: '',
 };
 
 export default ActionMessage;

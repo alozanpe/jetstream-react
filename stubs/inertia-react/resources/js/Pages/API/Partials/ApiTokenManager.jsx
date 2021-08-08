@@ -34,14 +34,14 @@ const ApiTokenManager = () => {
     const deleteApiTokenForm = useForm();
 
     const createApiToken = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         createApiTokenForm.post(route('api-tokens.store'), {
             preserveScroll: true,
             onSuccess: () => {
                 setDisplayingToken(true);
                 createApiTokenForm.reset();
-            }
+            },
         });
     };
 
@@ -78,7 +78,7 @@ const ApiTokenManager = () => {
             apiTokenForm.setData('permissions', prevPermissions.concat(e.target.id));
         } else {
             const index = prevPermissions.indexOf(e.target.id);
-            
+
             if (index > -1) {
                 prevPermissions.splice(index, 1);
             }
@@ -93,15 +93,20 @@ const ApiTokenManager = () => {
             <FormSection onSubmit={createApiToken}>
                 <FormSection.Title>{t('pages.api.apiTokenManager.title')}</FormSection.Title>
 
-                <FormSection.Description>
-                    {t('pages.api.apiTokenManager.description')}
-                </FormSection.Description>
-                
+                <FormSection.Description>{t('pages.api.apiTokenManager.description')}</FormSection.Description>
+
                 <FormSection.Form>
                     {/* Token Name */}
                     <div className="col-span-6 sm:col-span-4">
                         <Label htmlFor="name" value="Name" />
-                        <Input id="name" type="text" className="mt-1 block w-full" value={createApiTokenForm.data.name} onChange={e => createApiTokenForm.setData('name', e.target.value)} />
+                        <Input
+                            id="name"
+                            type="text"
+                            className="mt-1 block w-full"
+                            value={createApiTokenForm.data.name}
+                            autoFocus
+                            onChange={(e) => createApiTokenForm.setData('name', e.target.value)}
+                        />
                         <InputError message={createApiTokenForm.errors.name} className="mt-2" />
                     </div>
                     {/* Token Permissions */}
@@ -141,21 +146,16 @@ const ApiTokenManager = () => {
                     <SectionBorder />
 
                     <ActionSection>
-                        <ActionSection.Title>
-                            {t('pages.api.apiTokenManager.tokens.title')}
-                        </ActionSection.Title>
+                        <ActionSection.Title>{t('pages.api.apiTokenManager.tokens.title')}</ActionSection.Title>
 
                         <ActionSection.Description>
                             {t('pages.api.apiTokenManager.tokens.description')}
                         </ActionSection.Description>
-                        
+
                         <ActionSection.Content>
                             <div className="space-y-6">
                                 {tokens.map((token) => (
-                                    <div
-                                        className="flex items-center justify-between"
-                                        key={token.id}
-                                    >
+                                    <div className="flex items-center justify-between" key={token.id}>
                                         <div>{token.name}</div>
 
                                         <div className="flex items-center">
@@ -173,9 +173,7 @@ const ApiTokenManager = () => {
                                                         manageApiTokenPermissions(token);
                                                     }}
                                                 >
-                                                    {t(
-                                                        'pages.api.apiTokenManager.tokens.permissions'
-                                                    )}
+                                                    {t('pages.api.apiTokenManager.tokens.permissions')}
                                                 </button>
                                             )}
 
@@ -199,10 +197,8 @@ const ApiTokenManager = () => {
             {/* Token Value Modal */}
             {displayingToken && (
                 <DialogModal show close={() => setDisplayingToken(false)}>
-                    <DialogModal.Title>
-                        {t('pages.api.apiTokenManager.displayingToken.title')}
-                    </DialogModal.Title>
-                    
+                    <DialogModal.Title>{t('pages.api.apiTokenManager.displayingToken.title')}</DialogModal.Title>
+
                     <DialogModal.Content>
                         <div>{t('pages.api.apiTokenManager.displayingToken.content')}</div>
 
@@ -214,10 +210,7 @@ const ApiTokenManager = () => {
                     </DialogModal.Content>
 
                     <DialogModal.Footer>
-                        <SecondaryButton
-                            text="app.close"
-                            onClick={() => setDisplayingToken(false)}
-                        />
+                        <SecondaryButton text="app.close" onClick={() => setDisplayingToken(false)} />
                     </DialogModal.Footer>
                 </DialogModal>
             )}
@@ -239,9 +232,7 @@ const ApiTokenManager = () => {
                                             checked={updateApiTokenForm.data.permissions.includes(permission)}
                                             onChange={(e) => onUpdatePermissions(e, 'update')}
                                         />
-                                        <span className="ml-2 text-sm text-gray-600">
-                                            {permission}
-                                        </span>
+                                        <span className="ml-2 text-sm text-gray-600">{permission}</span>
                                     </label>
                                 </div>
                             ))}
@@ -249,10 +240,7 @@ const ApiTokenManager = () => {
                     </DialogModal.Content>
 
                     <DialogModal.Footer>
-                        <SecondaryButton
-                            text="app.cancel"
-                            onClick={() => setManagingPermissionsFor(null)}
-                        />
+                        <SecondaryButton text="app.cancel" onClick={() => setManagingPermissionsFor(null)} />
                         <Button
                             text="app.save"
                             className={`${updateApiTokenForm.processing ? 'opacity-25' : ''} ml-2`}
@@ -273,12 +261,9 @@ const ApiTokenManager = () => {
                     <ConfirmationModal.Content>
                         {t('pages.api.apiTokenManager.beingDeletedModal.content')}
                     </ConfirmationModal.Content>
-                    
+
                     <ConfirmationModal.Footer>
-                        <SecondaryButton
-                            text="app.cancel"
-                            onClick={() => setApiTokenBeingDeleted(null)}
-                        />
+                        <SecondaryButton text="app.cancel" onClick={() => setApiTokenBeingDeleted(null)} />
                         <Button
                             text="app.delete"
                             className={`${deleteApiTokenForm.processing ? 'opacity-25' : ''} ml-2`}

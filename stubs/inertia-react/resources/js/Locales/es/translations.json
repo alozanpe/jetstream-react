@@ -9,7 +9,8 @@
         "close": "Cerrar",
         "delete": "Eliminar",
         "error": "Whoops! Algo fue mal.",
-        "created": "Creado."
+        "created": "Creado.",
+        "saved": "Guardado."
     },
     "pages": {
         "welcome": {

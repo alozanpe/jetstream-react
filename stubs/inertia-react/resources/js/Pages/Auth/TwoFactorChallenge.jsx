@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import { useForm, Head } from '@inertiajs/inertia-react';
 import { useTranslation } from 'react-i18next';
 
 import AuthenticationCard from '@/Jetstream/AuthenticationCard';
@@ -13,104 +13,98 @@ const TwoFactorChallenge = () => {
     const code = useRef();
     const recovery_code = useRef();
     const [recovery, setRecovery] = useState(false);
-    const [form, setForm] = useState({
+
+    const form = useForm({
         code: '',
         recovery_code: '',
-        processing: false,
     });
 
     const toggleRecovery = (e) => {
         e.preventDefault();
+
         setRecovery(!recovery);
 
         if (!recovery) {
             recovery_code.current.focus();
-            setForm({ ...form, code: '' });
+            form.setData('code', '');
         } else {
             code.current.focus();
-            setForm({ ...form, recovery_code: '' });
+            form.setData('recovery_code', '');
         }
     };
 
     const submit = (e) => {
         e.preventDefault();
-        setForm({ ...form, processing: true });
 
-        Inertia.post(
-            route('two-factor.login'),
-            {},
-            {
-                onFinish: () => {
-                    setForm({ ...form, processing: false });
-                },
-            }
-        );
+        form.post(route('two-factor.login'));
     };
 
     return (
-        <AuthenticationCard>
-            <div className="mb-4 text-sm text-gray-600">
-                {!recovery ? (
-                    <span>{t('pages.twoFactorChallenge.authCode')}</span>
-                ) : (
-                    <span>{t('pages.twoFactorChallenge.emergencyCode')}</span>
-                )}
-            </div>
+        <React.Fragment>
+            <Head title="Two-factor Confirmation" />
 
-            <ValidationErrors class="mb-4" />
-
-            <form onSubmit={submit}>
-                {!recovery ? (
-                    <div>
-                        <Label for="code" value={t('pages.twoFactorChallenge.code')} />
-                        <Input
-                            refProp={code}
-                            id="code"
-                            type="text"
-                            inputmode="numeric"
-                            className="mt-1 block w-full"
-                            onChange={(e) => setForm({ ...form, code: e.target.value })}
-                            autofocus
-                            autocomplete="one-time-code"
-                        />
-                    </div>
-                ) : (
-                    <div>
-                        <Label
-                            for="recovery_code"
-                            value={t('pages.twoFactorChallenge.recoveryCode')}
-                        />
-                        <Input
-                            refProp={recovery_code}
-                            id="recovery_code"
-                            type="text"
-                            className="mt-1 block w-full"
-                            onChange={(e) => setForm({ ...form, removery_code: e.target.value })}
-                            autocomplete="one-time-code"
-                        />
-                    </div>
-                )}
-
-                <div className="flex items-center justify-end mt-4">
-                    <button
-                        type="button"
-                        className="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                        onClick={toggleRecovery}
-                    >
-                        {!recovery
-                            ? t('pages.twoFactorChallenge.useRecoveryCode')
-                            : t('pages.twoFactorChallenge.useAuthCode')}
-                    </button>
-
-                    <Button
-                        className="ml-4"
-                        className={`${form.processing ? 'opacity-25' : ''} ml-2`}
-                        disabled={form.processing}
-                        text="pages.twoFactorChallenge.login"
-                    />
+            <AuthenticationCard>
+                <div className="mb-4 text-sm text-gray-600">
+                    {!recovery ? (
+                        <span>{t('pages.twoFactorChallenge.authCode')}</span>
+                    ) : (
+                        <span>{t('pages.twoFactorChallenge.emergencyCode')}</span>
+                    )}
                 </div>
-            </form>
-        </AuthenticationCard>
+
+                <ValidationErrors class="mb-4" />
+
+                <form onSubmit={submit}>
+                    {!recovery ? (
+                        <div>
+                            <Label for="code" value={t('pages.twoFactorChallenge.code')} />
+                            <Input
+                                refProp={code}
+                                id="code"
+                                type="text"
+                                inputMode="numeric"
+                                className="mt-1 block w-full"
+                                autoFocus
+                                autoComplete="one-time-code"
+                                value={form.data.code}
+                                onChange={(e) => form.setData('code', e.target.value)}
+                            />
+                        </div>
+                    ) : (
+                        <div>
+                            <Label for="recovery_code" value={t('pages.twoFactorChallenge.recoveryCode')} />
+                            <Input
+                                refProp={recovery_code}
+                                id="recovery_code"
+                                type="text"
+                                className="mt-1 block w-full"
+                                autoComplete="one-time-code"
+                                value={form.data.code}
+                                onChange={(e) => form.setData('recovery_code', e.target.value)}
+                            />
+                        </div>
+                    )}
+
+                    <div className="flex items-center justify-end mt-4">
+                        <button
+                            type="button"
+                            className="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
+                            onClick={toggleRecovery}
+                        >
+                            {!recovery
+                                ? t('pages.twoFactorChallenge.useRecoveryCode')
+                                : t('pages.twoFactorChallenge.useAuthCode')}
+                        </button>
+
+                        <Button
+                            className={`${form.processing ? 'opacity-25' : ''} ml-4`}
+                            disabled={form.processing}
+                            text="pages.twoFactorChallenge.login"
+                        />
+                    </div>
+                </form>
+            </AuthenticationCard>
+        </React.Fragment>
     );
 };
 

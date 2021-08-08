@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { usePage, Link } from '@inertiajs/inertia-react';
 import { useTranslation } from 'react-i18next';
 
 import './welcome.css';
 
-const Welcome = ({ canLogin, canRegister }) => {
-    const { user } = usePage().props;
+const Welcome = () => {
+    const { user, canLogin, canRegister } = usePage().props;
     const { t } = useTranslation();
 
     return (
@@ -226,11 +225,6 @@ const Welcome = ({ canLogin, canRegister }) => {
             </div>
         </div>
     );
-};
-
-Welcome.propTypes = {
-    canLogin: PropTypes.bool.isRequired,
-    canRegister: PropTypes.bool.isRequired,
 };
 
 export default Welcome;
