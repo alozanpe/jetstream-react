@@ -48,11 +48,9 @@ const ForgotPassword = () => {
                     </div>
 
                     <div className="flex justify-end mt-4">
-                        <Button
-                            text={t('pages.forgotPassword.send')}
-                            className={`${form.processing ? 'opacity-25' : ''} ml-4`}
-                            disabled={form.processing}
-                        />
+                        <Button className={`${form.processing ? 'opacity-25' : ''} ml-4`} disabled={form.processing}>
+                            {t('pages.forgotPassword.send')}
+                        </Button>
                     </div>
                 </form>
             </AuthenticationCard>

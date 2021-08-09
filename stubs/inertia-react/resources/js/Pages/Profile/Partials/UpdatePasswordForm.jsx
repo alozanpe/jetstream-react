@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { createRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@inertiajs/inertia-react';
 
@@ -12,8 +12,8 @@ import ActionMessage from '@/Jetstream/ActionMessage';
 const UpdatePasswordForm = () => {
     const { t } = useTranslation();
 
-    const currentPasswordRef = useRef();
-    const passwordRef = useRef();
+    const currentPasswordRef = createRef();
+    const passwordRef = createRef();
 
     const form = useForm({
         current_password: '',
@@ -45,7 +45,9 @@ const UpdatePasswordForm = () => {
     return (
         <FormSection onSubmit={updatePassword}>
             <FormSection.Title>{t('pages.profile.updatePasswordForm.title')}</FormSection.Title>
+
             <FormSection.Description>{t('pages.profile.updatePasswordForm.description')}</FormSection.Description>
+
             <FormSection.Form>
                 <div className="col-span-6 sm:col-span-4">
                     <Label htmlFor="current_password" value={t('pages.profile.updatePasswordForm.current')} />
@@ -55,7 +57,7 @@ const UpdatePasswordForm = () => {
                         className="mt-1 block w-full"
                         value={form.data.current_password}
                         onChange={(e) => form.setData('current_password', e.target.value)}
-                        refProp={currentPasswordRef}
+                        ref={currentPasswordRef}
                     />
                     <InputError message={form.errors.current_password} className="mt-2" />
                 </div>
@@ -68,7 +70,7 @@ const UpdatePasswordForm = () => {
                         className="mt-1 block w-full"
                         value={form.data.password}
                         onChange={(e) => form.setData('password', e.target.value)}
-                        refProp={passwordRef}
+                        ref={passwordRef}
                     />
                     <InputError message={form.errors.password} className="mt-2" />
                 </div>
@@ -85,16 +87,15 @@ const UpdatePasswordForm = () => {
                     <InputError message={form.errors.password} className="mt-2" />
                 </div>
             </FormSection.Form>
+
             <FormSection.Actions>
                 <ActionMessage on={form.recentlySuccessful} className="mr-3">
                     {t('app.saved')}
                 </ActionMessage>
 
-                <Button
-                    text={t('app.save')}
-                    className={`${form.processing ? 'opacity-25' : ''}`}
-                    disabled={form.processing}
-                />
+                <Button className={`${form.processing ? 'opacity-25' : ''}`} disabled={form.processing}>
+                    {t('app.save')}
+                </Button>
             </FormSection.Actions>
         </FormSection>
     );

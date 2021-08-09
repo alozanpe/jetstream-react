@@ -10,12 +10,9 @@ import DialogModal from '@/Jetstream/DialogModal';
 import Input from '@/Jetstream/Input';
 import InputError from '@/Jetstream/InputError';
 
-import useApp from '@/Store/app/app-actions';
-
 const LogoutOtherBrowserSessionsForm = () => {
     const { t } = useTranslation();
     const { errors, sessions } = usePage().props;
-    const { doToggleModal } = useApp();
     const [confirmingLogout, setConfirmingLogout] = useState(false);
 
     const form = useForm({
@@ -25,12 +22,12 @@ const LogoutOtherBrowserSessionsForm = () => {
     const closeModal = () => {
         setConfirmingLogout(false);
 
+        form.clearErrors();
         form.reset();
     };
 
     const confirmLogout = () => {
         setConfirmingLogout(true);
-        doToggleModal();
     };
 
     const logoutOtherBrowserSessions = () => {
@@ -115,54 +112,45 @@ const LogoutOtherBrowserSessionsForm = () => {
                     </div>
                 )}
                 <div className="flex items-center mt-5">
-                    <Button
-                        text={t('pages.profile.logoutOtherSessionsForm.logoutOther')}
-                        onClick={() => {
-                            setConfirmingLogout(true);
-                            doToggleModal();
-                        }}
-                    />
+                    <Button onClick={confirmLogout}>{t('pages.profile.logoutOtherSessionsForm.logoutOther')}</Button>
                 </div>
+
                 {/* Logout Other Devices Confirmation Modal */}
-                {confirmingLogout && (
-                    <DialogModal>
-                        <DialogModal.Title>{t('pages.profile.logoutOtherSessionsForm.logoutOther')}</DialogModal.Title>
+                <DialogModal onClose={closeModal} show={confirmingLogout}>
+                    <DialogModal.Title>{t('pages.profile.logoutOtherSessionsForm.logoutOther')}</DialogModal.Title>
 
-                        <DialogModal.Content>
-                            {t('pages.profile.logoutOtherSessionsForm.confirm')}
-                            <div className="mt-4">
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    className="mt-1 block w-3/4"
-                                    placeholder={t('pages.profile.logoutOtherSessionsForm.passwordPlaceholder')}
-                                    required
-                                    autoFocus
-                                    value={form.data.password}
-                                    onChange={(e) => form.setData('password', e.target.value)}
-                                />
-
-                                <InputError message={errors.password} className="mt-2" />
-                            </div>
-                        </DialogModal.Content>
-
-                        <DialogModal.Footer>
-                            <SecondaryButton
-                                text={t('app.nevermind')}
-                                onClick={() => {
-                                    doToggleModal();
-                                    setConfirmingLogout(false);
-                                }}
+                    <DialogModal.Content>
+                        {t('pages.profile.logoutOtherSessionsForm.confirm')}
+                        <div className="mt-4">
+                            <Input
+                                id="password"
+                                type="password"
+                                className="mt-1 block w-3/4"
+                                placeholder={t('pages.profile.logoutOtherSessionsForm.passwordPlaceholder')}
+                                required
+                                autoFocus
+                                value={form.data.password}
+                                onChange={(e) => form.setData('password', e.target.value)}
                             />
-                            <DangerButton
-                                className={`${form.processing ? 'opacity-25' : ''} ml-2`}
-                                text={t('pages.profile.logoutOtherSessionsForm.logoutOther')}
-                                onClick={logoutOtherBrowserSessions}
-                                disabled={form.processing}
-                            />
-                        </DialogModal.Footer>
-                    </DialogModal>
-                )}
+
+                            <InputError message={errors.password} className="mt-2" />
+                        </div>
+                    </DialogModal.Content>
+
+                    <DialogModal.Footer>
+                        <SecondaryButton onClick={() => setConfirmingLogout(false)}>
+                            {t('app.nevermind')}
+                        </SecondaryButton>
+
+                        <DangerButton
+                            className={`${form.processing ? 'opacity-25' : ''} ml-2`}
+                            onClick={logoutOtherBrowserSessions}
+                            disabled={form.processing}
+                        >
+                            {t('pages.profile.logoutOtherSessionsForm.logoutOther')}
+                        </DangerButton>
+                    </DialogModal.Footer>
+                </DialogModal>
             </ActionSection.Content>
         </ActionSection>
     );

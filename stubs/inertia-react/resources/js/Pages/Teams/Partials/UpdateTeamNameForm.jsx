@@ -1,5 +1,6 @@
 import React from 'react';
 import { usePage, useForm } from '@inertiajs/inertia-react';
+
 import ActionMessage from '@/Jetstream/ActionMessage';
 import Button from '@/Jetstream/Button';
 import FormSection from '@/Jetstream/FormSection';
@@ -30,7 +31,7 @@ const UpdateTeamNameForm = () => {
             <FormSection.Form>
                 {/* Team Owner Information */}
                 <div className="col-span-6">
-                    <jet-label value="Team Owner" />
+                    <Label value="Team Owner" />
 
                     <div className="flex items-center mt-2">
                         <img

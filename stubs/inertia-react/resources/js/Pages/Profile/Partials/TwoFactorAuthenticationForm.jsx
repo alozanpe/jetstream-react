@@ -19,15 +19,11 @@ const TwoFactorAuthenticationForm = () => {
     const [recoveryCodes, setRecoveryCodes] = useState([]);
 
     const showRecoveryCodes = () => {
-        return axios.get('/user/two-factor-recovery-codes').then((response) => {
-            setRecoveryCodes(response.data);
-        });
+        return axios.get('/user/two-factor-recovery-codes').then((response) => setRecoveryCodes(response.data));
     };
 
     const showQrCode = () => {
-        return axios.get('/user/two-factor-qr-code').then((response) => {
-            setQrCode(response.data.svg);
-        });
+        return axios.get('/user/two-factor-qr-code').then((response) => setQrCode(response.data.svg));
     };
 
     const enableTwoFactorAuthentication = () => {
@@ -45,9 +41,7 @@ const TwoFactorAuthenticationForm = () => {
     };
 
     const regenerateRecoveryCodes = () => {
-        axios.post('/user/two-factor-recovery-codes').then(() => {
-            showRecoveryCodes();
-        });
+        axios.post('/user/two-factor-recovery-codes').then(() => showRecoveryCodes());
     };
 
     const disableTwoFactorAuthentication = () => {
@@ -122,39 +116,30 @@ const TwoFactorAuthenticationForm = () => {
                 <div className="mt-5">
                     {!twoFactorEnabled() ? (
                         <ConfirmPassword confirmed={enableTwoFactorAuthentication}>
-                            <Button
-                                type="button"
-                                className={`${enabling ? 'opacity-25' : ''}`}
-                                disabled={enabling}
-                                text="pages.profile.twoFactorAuthenticationForm.enable"
-                            />
+                            <Button type="button" className={`${enabling ? 'opacity-25' : ''}`} disabled={enabling}>
+                                {t('pages.profile.twoFactorAuthenticationForm.enable')}
+                            </Button>
                         </ConfirmPassword>
                     ) : (
                         <div>
                             <ConfirmPassword confirmed={regenerateRecoveryCodes}>
                                 {recoveryCodes.length > 0 && (
-                                    <SecondaryButton
-                                        type="button"
-                                        className="mr-3"
-                                        text="pages.profile.twoFactorAuthenticationForm.regenerateRecoveryCodes"
-                                    />
+                                    <SecondaryButton type="button" className="mr-3">
+                                        {t('pages.profile.twoFactorAuthenticationForm.regenerateRecoveryCodes')}
+                                    </SecondaryButton>
                                 )}
                             </ConfirmPassword>
                             <ConfirmPassword confirmed={showRecoveryCodes}>
                                 {recoveryCodes.length > 0 && (
-                                    <SecondaryButton
-                                        type="button"
-                                        className="mr-3"
-                                        text="pages.profile.twoFactorAuthenticationForm.showRecoveryCodes"
-                                    />
+                                    <SecondaryButton type="button" className="mr-3">
+                                        {t('pages.profile.twoFactorAuthenticationForm.showRecoveryCodes')}
+                                    </SecondaryButton>
                                 )}
                             </ConfirmPassword>
                             <ConfirmPassword confirmed={disableTwoFactorAuthentication}>
-                                <DangerButton
-                                    className={`${disabling ? 'opacity-25' : ''}`}
-                                    disabled={disabling}
-                                    text="pages.profile.twoFactorAuthenticationForm.disable"
-                                />
+                                <DangerButton className={`${disabling ? 'opacity-25' : ''}`} disabled={disabling}>
+                                    {t('pages.profile.twoFactorAuthenticationForm.disable')}
+                                </DangerButton>
                             </ConfirmPassword>
                         </div>
                     )}

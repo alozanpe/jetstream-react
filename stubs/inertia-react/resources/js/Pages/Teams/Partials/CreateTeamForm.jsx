@@ -1,12 +1,15 @@
 import React from 'react';
+import { useForm, usePage } from '@inertiajs/inertia-react';
+import { useTranslation } from 'react-i18next';
+
 import Button from '@/Jetstream/Button';
 import FormSection from '@/Jetstream/FormSection';
 import Input from '@/Jetstream/Input';
 import InputError from '@/Jetstream/InputError';
 import Label from '@/Jetstream/Label';
-import { useForm, usePage } from '@inertiajs/inertia-react';
 
 const CreateTeamForm = () => {
+    const { t } = useTranslation();
     const { user } = usePage().props;
 
     const form = useForm({
@@ -59,11 +62,9 @@ const CreateTeamForm = () => {
             </FormSection.Form>
 
             <FormSection.Actions>
-                <Button
-                    className={`${form.processing ? 'opacity-25' : ''}`}
-                    disabled={form.processing}
-                    text="app.create"
-                />
+                <Button className={form.processing ? 'opacity-25' : ''} disabled={form.processing}>
+                    {t('app.create')}
+                </Button>
             </FormSection.Actions>
         </FormSection>
     );

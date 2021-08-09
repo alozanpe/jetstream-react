@@ -86,11 +86,9 @@ const Login = () => {
                             </Link>
                         )}
 
-                        <Button
-                            text={t('pages.login.login')}
-                            className={`${form.processing ? 'opacity-25' : ''} ml-4`}
-                            disabled={form.processing}
-                        />
+                        <Button className={form.processing ? 'opacity-25 ml-4' : 'ml-4'} disabled={form.processing}>
+                            {t('pages.login.login')}
+                        </Button>
                     </div>
                 </form>
             </AuthenticationCard>

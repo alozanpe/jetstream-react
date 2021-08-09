@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { usePage, useForm } from '@inertiajs/inertia-react';
+
 import ActionSection from '@/Jetstream/ActionSection';
 import ConfirmationModal from '@/Jetstream/ConfirmationModal';
 import DangerButton from '@/Jetstream/DangerButton';

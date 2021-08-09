@@ -124,11 +124,9 @@ const Register = () => {
                             {t('pages.register.already')}
                         </Link>
 
-                        <Button
-                            className={`${form.processing ? 'opacity-25' : ''} ml-4`}
-                            disabled={form.processing}
-                            text="pages.register.register"
-                        />
+                        <Button className={form.processing ? 'opacity-25 ml-4' : 'ml-4'} disabled={form.processing}>
+                            {t('pages.register.register')}
+                        </Button>
                     </div>
                 </form>
             </AuthenticationCard>

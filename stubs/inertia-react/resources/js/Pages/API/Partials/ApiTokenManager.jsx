@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePage, useForm } from '@inertiajs/inertia-react';
 
@@ -21,6 +21,9 @@ const ApiTokenManager = () => {
     const [displayingToken, setDisplayingToken] = useState(false);
     const [managingPermissionsFor, setManagingPermissionsFor] = useState(null);
     const [apiTokenBeingDeleted, setApiTokenBeingDeleted] = useState(null);
+    const closeButtonRef = useRef();
+    const cancelUpdateApiRef = useRef();
+    const cancelDeleteApiButtonRef = useRef();
 
     const createApiTokenForm = useForm({
         name: '',
@@ -134,10 +137,11 @@ const ApiTokenManager = () => {
                     </ActionMessage>
 
                     <Button
-                        className={`${createApiTokenForm.processing ? 'opacity-25' : ''} ml-2`}
+                        className={createApiTokenForm.processing ? 'opacity-25 ml-2' : 'ml-2'}
                         disabled={createApiTokenForm.processing}
-                        text="app.create"
-                    />
+                    >
+                        {t('app.create')}
+                    </Button>
                 </FormSection.Actions>
             </FormSection>
 
@@ -195,84 +199,96 @@ const ApiTokenManager = () => {
             )}
 
             {/* Token Value Modal */}
-            {displayingToken && (
-                <DialogModal show close={() => setDisplayingToken(false)}>
-                    <DialogModal.Title>{t('pages.api.apiTokenManager.displayingToken.title')}</DialogModal.Title>
+            <DialogModal show={displayingToken} onClose={() => setDisplayingToken(false)} ref={closeButtonRef}>
+                <DialogModal.Title>{t('pages.api.apiTokenManager.displayingToken.title')}</DialogModal.Title>
 
-                    <DialogModal.Content>
-                        <div>{t('pages.api.apiTokenManager.displayingToken.content')}</div>
+                <DialogModal.Content>
+                    <div>{t('pages.api.apiTokenManager.displayingToken.content')}</div>
 
-                        {jetstream.flash.token && (
-                            <div className="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500">
-                                {jetstream.flash.token}
-                            </div>
-                        )}
-                    </DialogModal.Content>
+                    {jetstream.flash.token && (
+                        <div className="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500">
+                            {jetstream.flash.token}
+                        </div>
+                    )}
+                </DialogModal.Content>
 
-                    <DialogModal.Footer>
-                        <SecondaryButton text="app.close" onClick={() => setDisplayingToken(false)} />
-                    </DialogModal.Footer>
-                </DialogModal>
-            )}
+                <DialogModal.Footer>
+                    <SecondaryButton ref={closeButtonRef} onClick={() => setDisplayingToken(false)}>
+                        {t('app.close')}
+                    </SecondaryButton>
+                </DialogModal.Footer>
+            </DialogModal>
 
             {/* API Token Permissions Modal */}
-            {managingPermissionsFor && (
-                <DialogModal show close={() => setManagingPermissionsFor(null)}>
-                    <DialogModal.Title>
-                        {t('pages.api.apiTokenManager.managingPermissionsModal.title')}
-                    </DialogModal.Title>
+            <DialogModal
+                show={managingPermissionsFor !== null}
+                onClose={() => setManagingPermissionsFor(null)}
+                ref={cancelUpdateApiRef}
+            >
+                <DialogModal.Title>{t('pages.api.apiTokenManager.managingPermissionsModal.title')}</DialogModal.Title>
 
-                    <DialogModal.Content>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {availablePermissions.map((permission) => (
-                                <div key={permission}>
-                                    <label className="flex items-center">
-                                        <Checkbox
-                                            id={permission}
-                                            checked={updateApiTokenForm.data.permissions.includes(permission)}
-                                            onChange={(e) => onUpdatePermissions(e, 'update')}
-                                        />
-                                        <span className="ml-2 text-sm text-gray-600">{permission}</span>
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
-                    </DialogModal.Content>
+                <DialogModal.Content>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {availablePermissions.map((permission) => (
+                            <div key={permission}>
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        id={permission}
+                                        checked={updateApiTokenForm.data.permissions.includes(permission)}
+                                        onChange={(e) => onUpdatePermissions(e, 'update')}
+                                    />
+                                    <span className="ml-2 text-sm text-gray-600">{permission}</span>
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                </DialogModal.Content>
 
-                    <DialogModal.Footer>
-                        <SecondaryButton text="app.cancel" onClick={() => setManagingPermissionsFor(null)} />
-                        <Button
-                            text="app.save"
-                            className={`${updateApiTokenForm.processing ? 'opacity-25' : ''} ml-2`}
-                            disabled={updateApiTokenForm.processing}
-                            onClick={() => updateApiToken()}
-                        />
-                    </DialogModal.Footer>
-                </DialogModal>
-            )}
+                <DialogModal.Footer>
+                    <SecondaryButton
+                        className="mr-4"
+                        ref={cancelUpdateApiRef}
+                        onClick={() => setManagingPermissionsFor(null)}
+                    >
+                        {t('app.cancel')}
+                    </SecondaryButton>
+                    <Button
+                        onClick={updateApiToken}
+                        className={updateApiTokenForm.processing ? 'opacity-25' : ''}
+                        disabled={updateApiTokenForm.processing}
+                    >
+                        {t('app.save')}
+                    </Button>
+                </DialogModal.Footer>
+            </DialogModal>
 
             {/* Delete Token Confirmation Modal */}
-            {apiTokenBeingDeleted && (
-                <ConfirmationModal show close={() => setApiTokenBeingDeleted(null)}>
-                    <ConfirmationModal.Title>
-                        {t('pages.api.apiTokenManager.beingDeletedModal.title')}
-                    </ConfirmationModal.Title>
+            <ConfirmationModal
+                show={apiTokenBeingDeleted !== null}
+                onClose={() => setApiTokenBeingDeleted(null)}
+                ref={cancelDeleteApiButtonRef}
+            >
+                <ConfirmationModal.Title>
+                    {t('pages.api.apiTokenManager.beingDeletedModal.title')}
+                </ConfirmationModal.Title>
 
-                    <ConfirmationModal.Content>
-                        {t('pages.api.apiTokenManager.beingDeletedModal.content')}
-                    </ConfirmationModal.Content>
+                <ConfirmationModal.Content>
+                    {t('pages.api.apiTokenManager.beingDeletedModal.content')}
+                </ConfirmationModal.Content>
 
-                    <ConfirmationModal.Footer>
-                        <SecondaryButton text="app.cancel" onClick={() => setApiTokenBeingDeleted(null)} />
-                        <Button
-                            text="app.delete"
-                            className={`${deleteApiTokenForm.processing ? 'opacity-25' : ''} ml-2`}
-                            disabled={deleteApiTokenForm.processing}
-                            onClick={() => deleteApiToken()}
-                        />
-                    </ConfirmationModal.Footer>
-                </ConfirmationModal>
-            )}
+                <ConfirmationModal.Footer>
+                    <SecondaryButton ref={cancelDeleteApiButtonRef} onClick={() => setApiTokenBeingDeleted(null)}>
+                        {t('app.cancel')}
+                    </SecondaryButton>
+                    <Button
+                        onClick={deleteApiToken}
+                        className={deleteApiTokenForm.processing ? 'opacity-25 ml-2' : 'ml-2'}
+                        disabled={deleteApiTokenForm.processing}
+                    >
+                        {t('app.delete')}
+                    </Button>
+                </ConfirmationModal.Footer>
+            </ConfirmationModal>
         </React.Fragment>
     );
 };

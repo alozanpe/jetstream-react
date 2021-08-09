@@ -73,11 +73,9 @@ const ResetPassword = () => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
-                        <Button
-                            className={`${form.processing ? 'opacity-25' : ''} ml-4`}
-                            disabled={form.processing}
-                            text="pages.resetPassword.reset"
-                        />
+                        <Button className={`${form.processing ? 'opacity-25' : ''} ml-4`} disabled={form.processing}>
+                            {t('pages.resetPassword.reset')}
+                        </Button>
                     </div>
                 </form>
             </AuthenticationCard>

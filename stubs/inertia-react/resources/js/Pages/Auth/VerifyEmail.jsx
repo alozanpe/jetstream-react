@@ -34,11 +34,9 @@ const VerifyEmail = () => {
 
                 <form onSubmit={onSubmit}>
                     <div className="mt-4 flex items-center justify-between">
-                        <Button
-                            className={`${form.processing ? 'opacity-25' : ''}`}
-                            disabled={form.processing}
-                            text="pages.verifyEmail.resend"
-                        />
+                        <Button className={form.processing ? 'opacity-25' : ''} disabled={form.processing}>
+                            {t('pages.verifyEmail.resend')}
+                        </Button>
 
                         <Link
                             href={route('logout')}

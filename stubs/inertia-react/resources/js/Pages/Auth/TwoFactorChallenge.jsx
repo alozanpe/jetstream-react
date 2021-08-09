@@ -59,7 +59,7 @@ const TwoFactorChallenge = () => {
                         <div>
                             <Label for="code" value={t('pages.twoFactorChallenge.code')} />
                             <Input
-                                refProp={code}
+                                ref={code}
                                 id="code"
                                 type="text"
                                 inputMode="numeric"
@@ -74,7 +74,7 @@ const TwoFactorChallenge = () => {
                         <div>
                             <Label for="recovery_code" value={t('pages.twoFactorChallenge.recoveryCode')} />
                             <Input
-                                refProp={recovery_code}
+                                ref={recovery_code}
                                 id="recovery_code"
                                 type="text"
                                 className="mt-1 block w-full"
@@ -96,11 +96,9 @@ const TwoFactorChallenge = () => {
                                 : t('pages.twoFactorChallenge.useAuthCode')}
                         </button>
 
-                        <Button
-                            className={`${form.processing ? 'opacity-25' : ''} ml-4`}
-                            disabled={form.processing}
-                            text="pages.twoFactorChallenge.login"
-                        />
+                        <Button className={`${form.processing ? 'opacity-25' : ''} ml-4`} disabled={form.processing}>
+                            {t('pages.twoFactorChallenge.login')}
+                        </Button>
                     </div>
                 </form>
             </AuthenticationCard>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import Modal from '@/Jetstream/Modal';
@@ -7,22 +7,17 @@ const Title = () => null;
 const Content = () => null;
 const Footer = () => null;
 
-const ConfirmationModal = ({ close, show, maxWidth, closeable, children }) => {
+const ConfirmationModal = forwardRef(({children, show, width, onClose, closeable}, focusRef) => {
     const title = children.find((child) => child.type === Title);
     const content = children.find((child) => child.type === Content);
     const footer = children.find((child) => child.type === Footer);
 
     return (
-        <Modal maxWidth={maxWidth} closeable={closeable} close={close} show={show}>
+        <Modal open={show} width={width} closeable={closeable} onClose={onClose} ref={focusRef}>
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg
-                            className="h-6 w-6 text-red-600"
-                            stroke="currentColor"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
+                        <svg className="h-6 w-6 text-red-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -40,9 +35,7 @@ const ConfirmationModal = ({ close, show, maxWidth, closeable, children }) => {
                 </div>
             </div>
 
-            <div className="px-6 py-4 bg-gray-100 text-right">
-                {footer ? footer.props.children : null}
-            </div>
+            <div className="px-6 py-4 bg-gray-100 text-right">{footer ? footer.props.children : null}</div>
         </Modal>
     );
 };
@@ -52,20 +45,16 @@ ConfirmationModal.Content = Content;
 ConfirmationModal.Footer = Footer;
 
 ConfirmationModal.propTypes = {
-    close: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
     show: PropTypes.bool,
-    maxWidth: PropTypes.string,
+    width: PropTypes.string,
     closeable: PropTypes.bool,
-    children: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node,
-        PropTypes.arrayOf(PropTypes.node),
-    ]).isRequired,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.arrayOf(PropTypes.node)]).isRequired,
 };
 
 ConfirmationModal.defaultProps = {
     show: false,
-    maxWidth: '2xl',
+    width: '2xl',
     closeable: true,
 };
 

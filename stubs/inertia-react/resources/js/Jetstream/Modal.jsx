@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
-import ReactDOM from 'react-dom';
+import React, { forwardRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { Dialog, Transition } from '@headlessui/react';
 
-import useApp from '@/Store/app/app-actions';
-
-const Modal = ({ children, maxWidth, close, show, closeable }) => {
-    const { app } = useApp();
-    const modalContainer = document.querySelector('#modalContainer');
+const Modal = forwardRef(({ open, onClose, children, closeable, width }, focusRef) => {
+    const handleClose = () => {
+        if (!closeable) return null;
+        onClose();
+    };
 
     const maxWidthClass = useMemo(() => {
         return {
@@ -15,44 +15,71 @@ const Modal = ({ children, maxWidth, close, show, closeable }) => {
             lg: 'sm:max-w-lg',
             xl: 'sm:max-w-xl',
             '2xl': 'sm:max-w-2xl',
-        }[maxWidth];
-    }, [maxWidth]);
+        }[width];
+    }, [width]);
 
-    if (app.showModal || show) {
-        return ReactDOM.createPortal(
-            <div className="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0">
-                {closeable && (
-                    <div className="fixed inset-0 transform transition-all" onClick={close}>
-                        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+    return (
+        <Transition.Root show={open} as={React.Fragment}>
+            <Dialog
+                as="div"
+                static
+                className="fixed z-20 inset-0 overflow-y-auto"
+                open={open}
+                initialFocus={focusRef}
+                onClose={handleClose}
+            >
+                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <Transition.Child
+                        as={React.Fragment}
+                        enter="ease-out duration-200"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-100"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-20 transition-opacity backdrop-filter backdrop-blur-md" />
+                    </Transition.Child>
+
+                    <div className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                        &#8203;
                     </div>
-                )}
 
-                <div
-                    className={`mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
-                >
-                    {children}
+                    <Transition.Child
+                        as={React.Fragment}
+                        enter="ease-out duration-200"
+                        enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        enterTo="opacity-100 translate-y-0 sm:scale-100"
+                        leave="ease-in duration-100"
+                        leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                        leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    >
+                        <div
+                            v-show="show"
+                            className={`inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle ${maxWidthClass}`}
+                        >
+                            {children}
+                        </div>
+                    </Transition.Child>
                 </div>
-            </div>,
-            modalContainer
-        );
-    }
-
-    return null;
-};
+            </Dialog>
+        </Transition.Root>
+    );
+});
 
 Modal.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]).isRequired,
-    maxWidth: PropTypes.string,
-    close: PropTypes.func,
-    show: PropTypes.bool,
+    open: PropTypes.bool,
+    onClose: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.string]).isRequired,
     closeable: PropTypes.bool,
+    width: PropTypes.string,
 };
 
 Modal.defaultProps = {
-    maxWidth: '2xl',
-    close: () => {},
-    show: false,
-    closeable: true,
+    open: true,
+    onClose: () => {},
+    closeable: false,
+    width: '2xl',
 };
 
 export default Modal;

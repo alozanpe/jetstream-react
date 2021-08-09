@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePage, useForm } from '@inertiajs/inertia-react';
 
@@ -9,25 +9,21 @@ import DialogModal from '@/Jetstream/DialogModal';
 import Input from '@/Jetstream/Input';
 import InputError from '@/Jetstream/InputError';
 
-import useApp from '@/Store/app/app-actions';
-
 const DeleteUserForm = () => {
     const { t } = useTranslation();
     const { errors } = usePage().props;
-    const { doToggleModal } = useApp();
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+    const passwordRef = useRef();
 
     const form = useForm({
         password: '',
     });
 
-    const doConfirmUserDeletion = () => {
-        doToggleModal();
+    const confirmUserDeletion = () => {
         setConfirmingUserDeletion(true);
     };
 
     const closeModal = () => {
-        doToggleModal();
         setConfirmingUserDeletion(false);
 
         form.reset();
@@ -37,6 +33,7 @@ const DeleteUserForm = () => {
         form.delete(route('current-user.destroy'), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
+            onError: () => passwordRef.current.focus(),
             onFinish: () => form.reset(),
         });
     };
@@ -50,49 +47,52 @@ const DeleteUserForm = () => {
             <ActionSection.Content>
                 <div className="max-w-xl text-sm text-gray-600">{t('pages.profile.deleteUserForm.content')}</div>
                 <div className="mt-5">
-                    <DangerButton text={t('pages.profile.deleteUserForm.title')} onClick={doConfirmUserDeletion} />
+                    <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
                 </div>
 
                 {/* Delete Account Confirmation Modal */}
-                {confirmingUserDeletion && (
-                    <DialogModal>
-                        <DialogModal.Title>{t('pages.profile.deleteUserForm.title')}</DialogModal.Title>
+                <DialogModal onClose={closeModal} show={confirmingUserDeletion}>
+                    <DialogModal.Title>{t('pages.profile.deleteUserForm.title')}</DialogModal.Title>
 
-                        <DialogModal.Content>
-                            {t('pages.profile.deleteUserForm.modalContent')}
-                            <div className="mt-4">
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    className="mt-1 block w-3/4"
-                                    placeholder={t('pages.profile.deleteUserForm.passwordPlaceholder')}
-                                    required
-                                    autoFocus
-                                    value={form.data.password}
-                                    onChange={(e) => form.setData('password', e.target.value)}
-                                />
-
-                                <InputError message={errors.password} className="mt-2" />
-                            </div>
-                        </DialogModal.Content>
-
-                        <DialogModal.Footer>
-                            <SecondaryButton
-                                text={t('app.nevermind')}
-                                onClick={() => {
-                                    doToggleModal();
-                                    setConfirmingUserDeletion(false);
-                                }}
+                    <DialogModal.Content>
+                        {t('pages.profile.deleteUserForm.modalContent')}
+                        <div className="mt-4">
+                            <Input
+                                id="password"
+                                type="password"
+                                className="mt-1 block w-3/4"
+                                placeholder={t('pages.profile.deleteUserForm.passwordPlaceholder')}
+                                required
+                                autoFocus
+                                value={form.data.password}
+                                ref={passwordRef}
+                                onChange={(e) => form.setData('password', e.target.value)}
                             />
-                            <DangerButton
-                                className={`${form.processing ? 'opacity-25' : ''} ml-2`}
-                                text={t('pages.profile.deleteUserForm.title')}
-                                disabled={form.processing}
-                                onClick={deleteUser}
-                            />
-                        </DialogModal.Footer>
-                    </DialogModal>
-                )}
+
+                            <InputError message={errors.password} className="mt-2" />
+                        </div>
+                    </DialogModal.Content>
+
+                    <DialogModal.Footer>
+                        <SecondaryButton
+                            onClick={closeModal}
+                            className={`${form.processing && 'opacity-25'}`}
+                            type="button"
+                            disabled={form.processing}
+                        >
+                            Cancel
+                        </SecondaryButton>
+
+                        <DangerButton
+                            onClick={deleteUser}
+                            className={`ml-2 ${form.processing && 'opacity-25'}`}
+                            type="button"
+                            disabled={form.processing}
+                        >
+                            Delete Account
+                        </DangerButton>
+                    </DialogModal.Footer>
+                </DialogModal>
             </ActionSection.Content>
         </ActionSection>
     );

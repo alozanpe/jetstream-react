@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { usePage, useForm } from '@inertiajs/inertia-react';
+import { useTranslation } from 'react-i18next';
+
 import ActionMessage from '@/Jetstream/ActionMessage';
 import ActionSection from '@/Jetstream/ActionSection';
 import Button from '@/Jetstream/Button';
@@ -15,6 +17,7 @@ import SecondaryButton from '@/Jetstream/SecondaryButton';
 import SectionBorder from '@/Jetstream/SectionBorder';
 
 const TeamMemberManage = () => {
+    const { t } = useTranslation();
     const { team, availableRoles, userPermissions, user } = usePage().props;
     const [currentlyManagingRole, setCurrentlyManagingRole] = useState(false);
     const [managingRoleFor, setManagingRoleFor] = useState(null);
@@ -181,10 +184,11 @@ const TeamMemberManage = () => {
                             </ActionMessage>
 
                             <Button
-                                className={`${addTeamMemberForm.processing ? 'opacity-25' : ''}`}
+                                className={addTeamMemberForm.processing ? 'opacity-25' : ''}
                                 disabled={addTeamMemberForm.processing}
-                                text="app.create"
-                            />
+                            >
+                                {t('app.create')}
+                            </Button>
                         </FormSection.Actions>
                     </FormSection>
                 </React.Fragment>

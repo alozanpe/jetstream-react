@@ -48,11 +48,9 @@ const ConfirmPassword = () => {
                     </div>
 
                     <div className="flex justify-end mt-4">
-                        <Button
-                            text={t('pages.confirmPassword.confirm')}
-                            className={`${form.processing ? 'opacity-25' : ''} ml-4`}
-                            disabled={form.processing}
-                        />
+                        <Button className={`${form.processing ? 'opacity-25' : ''} ml-4`} disabled={form.processing}>
+                            {t('pages.confirmPassword.confirm')}
+                        </Button>
                     </div>
                 </form>
             </AuthenticationCard>

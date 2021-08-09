@@ -107,20 +107,14 @@ const UpdateProfileInformationForm = () => {
                             </div>
                         )}
 
-                        <SecondaryButton
-                            className="mt-2 mr-2"
-                            type="button"
-                            onClick={() => selectNewPhoto()}
-                            text={t('pages.profile.updateProfileInformationForm.selectNew')}
-                        />
+                        <SecondaryButton className="mt-2 mr-2" type="button" onClick={() => selectNewPhoto()}>
+                            {t('pages.profile.updateProfileInformationForm.selectNew')}
+                        </SecondaryButton>
 
                         {user.profile_photo_path && (
-                            <SecondaryButton
-                                type="button"
-                                className="mt-2"
-                                onClick={() => deletePhoto()}
-                                text={t('pages.profile.updateProfileInformationForm.remove')}
-                            />
+                            <SecondaryButton type="button" className="mt-2" onClick={() => deletePhoto()}>
+                                {t('pages.profile.updateProfileInformationForm.remove')}
+                            </SecondaryButton>
                         )}
 
                         <InputError className="mt-2" message={form.errors.photo} />
@@ -160,11 +154,9 @@ const UpdateProfileInformationForm = () => {
                     {t('app.saved')}
                 </ActionMessage>
 
-                <Button
-                    text={t('app.save')}
-                    className={`${form.processing ? 'opacity-25' : ''}`}
-                    disabled={form.processing}
-                />
+                <Button className={form.processing ? 'opacity-25' : ''} disabled={form.processing}>
+                    {t('app.save')}
+                </Button>
             </FormSection.Actions>
         </FormSection>
     );
