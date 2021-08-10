@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 
-const Modal = forwardRef(({ open, onClose, children, closeable, width }, focusRef) => {
+const Modal = forwardRef(({ show, onClose, children, closeable, width }, focusRef) => {
     const handleClose = () => {
         if (!closeable) return null;
         onClose();
@@ -19,12 +19,12 @@ const Modal = forwardRef(({ open, onClose, children, closeable, width }, focusRe
     }, [width]);
 
     return (
-        <Transition.Root show={open} as={React.Fragment}>
+        <Transition show={show} as={React.Fragment}>
             <Dialog
                 as="div"
                 static
                 className="fixed z-20 inset-0 overflow-y-auto"
-                open={open}
+                open={show}
                 initialFocus={focusRef}
                 onClose={handleClose}
             >
@@ -54,21 +54,22 @@ const Modal = forwardRef(({ open, onClose, children, closeable, width }, focusRe
                         leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                         leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     >
-                        <div
-                            v-show="show"
-                            className={`inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle ${maxWidthClass}`}
-                        >
-                            {children}
-                        </div>
+                        {show && (
+                            <div
+                                className={`inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle ${maxWidthClass}`}
+                            >
+                                {children}
+                            </div>
+                        )}
                     </Transition.Child>
                 </div>
             </Dialog>
-        </Transition.Root>
+        </Transition>
     );
 });
 
 Modal.propTypes = {
-    open: PropTypes.bool,
+    show: PropTypes.bool,
     onClose: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.string]).isRequired,
     closeable: PropTypes.bool,
@@ -76,7 +77,7 @@ Modal.propTypes = {
 };
 
 Modal.defaultProps = {
-    open: true,
+    show: false,
     onClose: () => {},
     closeable: false,
     width: '2xl',

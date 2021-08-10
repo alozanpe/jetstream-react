@@ -414,7 +414,7 @@ EOF;
                 '@fullhuman/postcss-purgecss' => '^3.1.3',
                 '@headlessui/react' => '^1.4.0',
                 '@inertiajs/inertia' => '^0.10.0',
-                '@inertiajs/inertia-react' => '^0.5.1',
+                '@inertiajs/inertia-react' => '^0.7.1',
                 '@inertiajs/progress' => '^0.2.6',
                 '@reduxjs/toolkit' => '^1.5.0',
                 '@tailwindcss/forms' => '^0.2.1',

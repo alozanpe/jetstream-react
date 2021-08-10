@@ -52,7 +52,7 @@ const TwoFactorChallenge = () => {
                     )}
                 </div>
 
-                <ValidationErrors class="mb-4" />
+                <ValidationErrors className="mb-4" />
 
                 <form onSubmit={submit}>
                     {!recovery ? (

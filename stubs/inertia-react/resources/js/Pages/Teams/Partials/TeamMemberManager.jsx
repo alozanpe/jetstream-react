@@ -18,11 +18,11 @@ import SectionBorder from '@/Jetstream/SectionBorder';
 
 const TeamMemberManager = () => {
     const { t } = useTranslation();
-    const { team, availableRoles, userPermissions, user } = usePage().props;
+    const { team, availableRoles, permissions, user } = usePage().props;
     const [currentlyManagingRole, setCurrentlyManagingRole] = useState(false);
     const [managingRoleFor, setManagingRoleFor] = useState(null);
     const [confirmingLeavingTeam, setConfirmingLeavingTeam] = useState(false);
-    const [teamMemberBeingRemoved, setTeamMemberBeingRemoved] = useState(null);
+    const [teamMemberBeingRemoved, setTeamMemberBeingRemoved] = useState(false);
 
     const addTeamMemberForm = useForm({
         email: '',
@@ -81,7 +81,7 @@ const TeamMemberManager = () => {
             errorBag: 'removeTeamMember',
             preserveScroll: true,
             preserveState: true,
-            onSuccess: () => setTeamMemberBeingRemoved(null),
+            onSuccess: () => setTeamMemberBeingRemoved(false),
         });
     };
 
@@ -91,7 +91,7 @@ const TeamMemberManager = () => {
 
     return (
         <div>
-            {userPermissions.canAddTeamMembers && (
+            {permissions.canAddTeamMembers && (
                 <div>
                     <SectionBorder />
                     {/* Add Team Member */}
@@ -116,13 +116,14 @@ const TeamMemberManager = () => {
                                     id="email"
                                     type="email"
                                     className="mt-1 block w-full"
+                                    onChange={(e) => addTeamMemberForm.setData('email', e.target.value)}
                                     value={addTeamMemberForm.data.email}
                                 />
                                 <InputError message={addTeamMemberForm.errors.email} className="mt-2" />
                             </div>
 
                             {/* Role */}
-                            <div class="col-span-6 lg:col-span-4" v-if="availableRoles.length > 0">
+                            <div className="col-span-6 lg:col-span-4" v-if="availableRoles.length > 0">
                                 <Label for="roles" value="Role" />
                                 <InputError message={addTeamMemberForm.errors.role} className="mt-2" />
 
@@ -131,7 +132,7 @@ const TeamMemberManager = () => {
                                         <button
                                             key={role.key}
                                             type="button"
-                                            class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200"
+                                            className="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200"
                                             onClick={() => addTeamMemberForm.setData('role', role.key)}
                                         >
                                             <div
@@ -194,7 +195,7 @@ const TeamMemberManager = () => {
                 </div>
             )}
 
-            {team.team_invitations.length > 0 && userPermissions.canAddTeamMembers && (
+            {team.team_invitations.length > 0 && permissions.canAddTeamMembers && (
                 <div>
                     <SectionBorder />
 
@@ -214,7 +215,7 @@ const TeamMemberManager = () => {
                                         <div className="text-gray-600">{invitation.email}</div>
 
                                         <div className="flex items-center">
-                                            {userPermissions.canRemoveTeamMembers && (
+                                            {permissions.canRemoveTeamMembers && (
                                                 <button
                                                     className="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                                                     onClick={() => cancelTeamInvitation(invitation)}
@@ -260,7 +261,7 @@ const TeamMemberManager = () => {
                                         </div>
                                         <div className="flex items-center">
                                             {/* Manage Team Member Role */}
-                                            {userPermissions.canAddTeamMembers && availableRoles.length ? (
+                                            {permissions.canAddTeamMembers && availableRoles.length ? (
                                                 <button
                                                     className="ml-2 text-sm text-gray-400 underline"
                                                     onClick={() => manageRole(teamUser)}
@@ -286,7 +287,7 @@ const TeamMemberManager = () => {
                                             )}
 
                                             {/* Remove Team Member */}
-                                            {userPermissions.canRemoveTeamMembers && (
+                                            {permissions.canRemoveTeamMembers && (
                                                 <button
                                                     className="cursor-pointer ml-6 text-sm text-red-500"
                                                     onClick={() => confirmTeamMemberRemoval(teamUser)}
@@ -396,7 +397,7 @@ const TeamMemberManager = () => {
             </ConfirmationModal>
 
             {/* Remove Team Member Confirmation Modal */}
-            <ConfirmationModal show={confirmingRemovingMember} onClose={() => setConfirmingRemovingMember(false)}>
+            <ConfirmationModal show={teamMemberBeingRemoved} onClose={() => setTeamMemberBeingRemoved(false)}>
                 <ConfirmationModal.Title>Remove Team Member</ConfirmationModal.Title>
 
                 <ConfirmationModal.Content>

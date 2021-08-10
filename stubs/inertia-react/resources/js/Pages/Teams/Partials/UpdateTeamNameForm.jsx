@@ -56,6 +56,7 @@ const UpdateTeamNameForm = () => {
                         type="text"
                         className="mt-1 block w-full"
                         value={form.data.name}
+                        onChange={(e) => form.setData('name', e.target.value)}
                         disabled={!permissions.canUpdateTeam}
                     />
 
