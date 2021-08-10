@@ -412,6 +412,7 @@ EOF;
                 '@babel/plugin-syntax-jsx' => '^7.12.1',
                 '@babel/preset-react' => '^7.12.10',
                 '@fullhuman/postcss-purgecss' => '^3.1.3',
+                '@headlessui/react' => '^1.4.0',
                 '@inertiajs/inertia' => '^0.10.0',
                 '@inertiajs/inertia-react' => '^0.5.1',
                 '@inertiajs/progress' => '^0.2.6',
