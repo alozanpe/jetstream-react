@@ -3,15 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 const appSlice = createSlice({
     name: 'app',
     initialState: {
-        showModal: false,
+        locale: window.localStorage.getItem('i18nextLng') || 'es_ES',
     },
     reducers: {
-        toggleModal(state) {
-            state.showModal = !state.showModal;
+        changeLocale(state, action) {
+            state.locale = action.payload;
         },
     },
 });
 
-export const { toggleModal } = appSlice.actions;
+export const { changeLocale } = appSlice.actions;
 
 export default appSlice.reducer;

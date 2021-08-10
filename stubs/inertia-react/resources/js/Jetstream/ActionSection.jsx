@@ -5,13 +5,13 @@ const Title = () => null;
 const Description = () => null;
 const Content = () => null;
 
-const ActionSection = ({ children }) => {
+const ActionSection = ({ children, className }) => {
     const title = children.find((child) => child.type === Title);
     const description = children.find((child) => child.type === Description);
     const content = children.find((child) => child.type === Content);
 
     return (
-        <div className="md:grid md:grid-cols-3 md:gap-6">
+        <div className={`md:grid md:grid-cols-3 md:gap-6 ${className}`}>
             <div className="md:col-span-1">
                 <div className="px-4 sm:px-0">
                     <h3 className="text-lg font-medium text-gray-900">
@@ -39,6 +39,11 @@ ActionSection.Content = Content;
 
 ActionSection.propTypes = {
     children: PropTypes.arrayOf(PropTypes.node).isRequired,
+    className: PropTypes.string,
+};
+
+ActionSection.defaultProps = {
+    className: '',
 };
 
 export default ActionSection;
