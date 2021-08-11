@@ -76,7 +76,7 @@ const DeleteUserForm = () => {
                     <DialogModal.Footer>
                         <SecondaryButton
                             onClick={closeModal}
-                            className={`${form.processing && 'opacity-25'}`}
+                            className={form.processing && 'opacity-25'}
                             type="button"
                             disabled={form.processing}
                         >

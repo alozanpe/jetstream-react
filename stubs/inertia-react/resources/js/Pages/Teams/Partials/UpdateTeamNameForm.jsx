@@ -15,7 +15,9 @@ const UpdateTeamNameForm = () => {
         name: team.name,
     });
 
-    const updateTeamName = () => {
+    const updateTeamName = (e) => {
+        e.preventDefault();
+
         form.put(route('teams.update', team), {
             errorBag: 'updateTeamName',
             preserveScroll: true,

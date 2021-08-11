@@ -37,7 +37,9 @@ const TeamMemberManager = () => {
 
     const removeTeamMemberForm = useForm();
 
-    const addTeamMember = () => {
+    const addTeamMember = (e) => {
+        e.preventDefault();
+
         addTeamMemberForm.post(route('team-members.store', team), {
             errorBag: 'addTeamMember',
             preserveScroll: true,
@@ -57,7 +59,9 @@ const TeamMemberManager = () => {
         setCurrentlyManagingRole(true);
     };
 
-    const updateRole = () => {
+    const updateRole = (e) => {
+        e.preventDefault();
+
         updateRoleForm.put(route('team-members.update', [team, managingRoleFor]), {
             preserveScroll: true,
             onSuccess: () => setCurrentlyManagingRole(false),
@@ -68,7 +72,9 @@ const TeamMemberManager = () => {
         setConfirmingLeavingTeam(true);
     };
 
-    const leaveTeam = () => {
+    const leaveTeam = (e) => {
+        e.preventDefault();
+
         leaveTeamForm.delete(route('team-members.destroy', [team, user]));
     };
 
@@ -76,7 +82,9 @@ const TeamMemberManager = () => {
         setTeamMemberBeingRemoved(teamMember);
     };
 
-    const removeTeamMember = () => {
+    const removeTeamMember = (e) => {
+        e.preventDefault();
+
         removeTeamMemberForm.delete(route('team-members.destroy', [team, teamMemberBeingRemoved]), {
             errorBag: 'removeTeamMember',
             preserveScroll: true,
@@ -188,7 +196,7 @@ const TeamMemberManager = () => {
                                 className={addTeamMemberForm.processing ? 'opacity-25' : ''}
                                 disabled={addTeamMemberForm.processing}
                             >
-                                {t('app.create')}
+                                Add
                             </Button>
                         </FormSection.Actions>
                     </FormSection>

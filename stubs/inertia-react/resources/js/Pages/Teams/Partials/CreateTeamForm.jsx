@@ -16,7 +16,9 @@ const CreateTeamForm = () => {
         name: '',
     });
 
-    const createTeam = () => {
+    const createTeam = (e) => {
+        e.preventDefault();
+
         form.post(route('teams.store'), {
             errorBag: 'createTeam',
             preserveScroll: true,

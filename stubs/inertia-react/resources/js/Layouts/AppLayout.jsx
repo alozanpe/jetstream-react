@@ -52,10 +52,7 @@ const AppLayout = ({ children }) => {
                                 </div>
 
                                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                    <NavLink
-                                        href={route('dashboard')}
-                                        active={route().current('dashboard')}
-                                    >
+                                    <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                         {t('appLayout.dashboard')}
                                     </NavLink>
                                 </div>
@@ -87,66 +84,58 @@ const AppLayout = ({ children }) => {
                                                 </span>
                                             </Dropdown.Trigger>
                                             <Dropdown.Content>
-                                                <div className="w-60">
-                                                    {jetstream.hasTeamFeatures && (
-                                                        <React.Fragment>
-                                                            <div className="block px-4 py-2 text-xs text-gray-400">
-                                                                {t('appLayout.manageTeam')}
-                                                            </div>
+                                                {jetstream.hasTeamFeatures && (
+                                                    <React.Fragment>
+                                                        <div className="block px-4 py-2 text-xs text-gray-400">
+                                                            {t('appLayout.manageTeam')}
+                                                        </div>
 
-                                                            <DropdownLink
-                                                                href={route(
-                                                                    'teams.show',
-                                                                    user.current_team
-                                                                )}
-                                                                text={t('appLayout.teamSettings')}
-                                                            />
+                                                        <DropdownLink href={route('teams.show', user.current_team)}>
+                                                            {t('appLayout.teamSettings')}
+                                                        </DropdownLink>
 
-                                                            {jetstream.canCreateTeams && (
-                                                                <DropdownLink
-                                                                    href={route('teams.create')}
-                                                                    text={t('appLayout.createTeam')}
-                                                                />
-                                                            )}
+                                                        {jetstream.canCreateTeams && (
+                                                            <DropdownLink href={route('teams.create')}>
+                                                                {t('appLayout.createTeam')}
+                                                            </DropdownLink>
+                                                        )}
 
-                                                            <div className="border-t border-gray-100"></div>
+                                                        <div className="border-t border-gray-100"></div>
 
-                                                            <div className="block px-4 py-2 text-xs text-gray-400">
-                                                                {t('appLayout.switchTeam')}
-                                                            </div>
+                                                        <div className="block px-4 py-2 text-xs text-gray-400">
+                                                            {t('appLayout.switchTeam')}
+                                                        </div>
 
-                                                            {user.all_teams.map((team) => (
-                                                                <form
-                                                                    key={team.id}
-                                                                    onSubmit={(e) => {
-                                                                        e.preventDefault();
-                                                                        switchToTeam(team);
-                                                                    }}
-                                                                >
-                                                                    <DropdownLink as="button">
-                                                                        <div className="flex items-center">
-                                                                            {team.id ===
-                                                                                user.current_team_id && (
-                                                                                <svg
-                                                                                    className="mr-2 h-5 w-5 text-green-400"
-                                                                                    fill="none"
-                                                                                    strokeLinecap="round"
-                                                                                    strokeLinejoin="round"
-                                                                                    strokeWidth="2"
-                                                                                    stroke="currentColor"
-                                                                                    viewBox="0 0 24 24"
-                                                                                >
-                                                                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                                                </svg>
-                                                                            )}
-                                                                            <div>{team.name}</div>
-                                                                        </div>
-                                                                    </DropdownLink>
-                                                                </form>
-                                                            ))}
-                                                        </React.Fragment>
-                                                    )}
-                                                </div>
+                                                        {user.all_teams.map((team) => (
+                                                            <form
+                                                                key={team.id}
+                                                                onSubmit={(e) => {
+                                                                    e.preventDefault();
+                                                                    switchToTeam(team);
+                                                                }}
+                                                            >
+                                                                <DropdownLink as="button">
+                                                                    <div className="flex items-center">
+                                                                        {team.id === user.current_team_id && (
+                                                                            <svg
+                                                                                className="mr-2 h-5 w-5 text-green-400"
+                                                                                fill="none"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                                strokeWidth="2"
+                                                                                stroke="currentColor"
+                                                                                viewBox="0 0 24 24"
+                                                                            >
+                                                                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                            </svg>
+                                                                        )}
+                                                                        <div>{team.name}</div>
+                                                                    </div>
+                                                                </DropdownLink>
+                                                            </form>
+                                                        ))}
+                                                    </React.Fragment>
+                                                )}
                                             </Dropdown.Content>
                                         </Dropdown>
                                     )}
@@ -204,9 +193,7 @@ const AppLayout = ({ children }) => {
                                             <div className="border-t border-gray-100"></div>
                                             {/* Authentication */}
                                             <form onSubmit={logout}>
-                                                <DropdownLink as="button">
-                                                    {t('appLayout.logout')}
-                                                </DropdownLink>
+                                                <DropdownLink as="button">{t('appLayout.logout')}</DropdownLink>
                                             </form>
                                         </Dropdown.Content>
                                     </Dropdown>
@@ -216,30 +203,19 @@ const AppLayout = ({ children }) => {
                             {/* Hamburger */}
                             <div className="-mr-2 flex items-center sm:hidden">
                                 <button
-                                    onClick={() =>
-                                        setShowingNavigationDropdown(!showingNavigationDropdown)
-                                    }
+                                    onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
                                     className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                                 >
-                                    <svg
-                                        className="h-6 w-6"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
+                                    <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                         <path
-                                            className={`${
-                                                showingNavigationDropdown ? 'hidden' : 'inline-flex'
-                                            }`}
+                                            className={`${showingNavigationDropdown ? 'hidden' : 'inline-flex'}`}
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
                                             strokeWidth="2"
                                             d="M4 6h16M4 12h16M4 18h16"
                                         />
                                         <path
-                                            className={`${
-                                                showingNavigationDropdown ? 'inline-flex' : 'hidden'
-                                            }`}
+                                            className={`${showingNavigationDropdown ? 'inline-flex' : 'hidden'}`}
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
                                             strokeWidth="2"
@@ -254,10 +230,7 @@ const AppLayout = ({ children }) => {
                     {/* Responsive Navigation Menu */}
                     <div className={`sm:hidden ${showingNavigationDropdown ? 'block' : 'hidden'}`}>
                         <div className="pt-2 pb-3 space-y-1">
-                            <ResponsiveNavLink
-                                href={route('dashboard')}
-                                active={route().current('dashboard')}
-                            >
+                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                                 {t('appLayout.dashboard')}
                             </ResponsiveNavLink>
                         </div>
@@ -275,12 +248,8 @@ const AppLayout = ({ children }) => {
                                 )}
 
                                 <div>
-                                    <div className="font-medium text-base text-gray-800">
-                                        {user.name}
-                                    </div>
-                                    <div className="font-medium text-sm text-gray-500">
-                                        {user.email}
-                                    </div>
+                                    <div className="font-medium text-base text-gray-800">{user.name}</div>
+                                    <div className="font-medium text-sm text-gray-500">{user.email}</div>
                                 </div>
                             </div>
                             <div className="mt-3 space-y-1">
@@ -302,9 +271,7 @@ const AppLayout = ({ children }) => {
 
                                 {/* Authentication */}
                                 <form method="POST" onSubmit={logout}>
-                                    <ResponsiveNavLink as="button">
-                                        {t('appLayout.logout')}
-                                    </ResponsiveNavLink>
+                                    <ResponsiveNavLink as="button">{t('appLayout.logout')}</ResponsiveNavLink>
                                 </form>
 
                                 {/* Team Management */}

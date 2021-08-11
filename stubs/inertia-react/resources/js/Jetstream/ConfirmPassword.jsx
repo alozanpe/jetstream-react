@@ -9,11 +9,8 @@ import Input from '@/Jetstream/Input';
 import InputError from '@/Jetstream/InputError';
 import SecondaryButton from '@/Jetstream/SecondaryButton';
 
-import useApp from '@/Store/app/app-actions';
-
 const ConfirmPassword = ({ title, content, button, confirmed, children }) => {
     const { t } = useTranslation();
-    const { doToggleModal } = useApp();
     const [password, setPassword] = useState('');
     const [formProcessing, setFormProcessing] = useState(false);
     const [confirmingPassword, setConfirmingPassword] = useState(false);
@@ -30,7 +27,6 @@ const ConfirmPassword = ({ title, content, button, confirmed, children }) => {
                 confirmed();
             } else {
                 setConfirmingPassword(true);
-                doToggleModal();
             }
         });
     };
@@ -57,43 +53,43 @@ const ConfirmPassword = ({ title, content, button, confirmed, children }) => {
         <span>
             <span onClick={startConfirmingPassword}>{children}</span>
 
-            {confirmingPassword && (
-                <DialogModal>
-                    <DialogModal.Title>{t(title)}</DialogModal.Title>
-                    <DialogModal.Content>
-                        {t(content)}
-                        <div className="mt-4">
-                            <Input
-                                id="password"
-                                type="password"
-                                className="mt-1 block w-3/4"
-                                placeholder={t('pages.confirmPassword.password')}
-                                value={password}
-                                required
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
+            <DialogModal show={confirmingPassword} onClose={closeModal}>
+                <DialogModal.Title>{t(title)}</DialogModal.Title>
+                <DialogModal.Content>
+                    {t(content)}
+                    <div className="mt-4">
+                        <Input
+                            id="password"
+                            type="password"
+                            className="mt-1 block w-3/4"
+                            placeholder={t('pages.confirmPassword.password')}
+                            value={password}
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
 
-                            <InputError message={errors.password} className="mt-2" />
-                        </div>
-                    </DialogModal.Content>
-                    <DialogModal.Footer>
-                        <SecondaryButton
-                            text="app.nevermind"
-                            onClick={() => {
-                                doToggleModal();
-                                setConfirmingLogout(false);
-                            }}
-                        />
-                        <Button
-                            className={`${formProcessing ? 'opacity-25' : ''} ml-2`}
-                            text={button}
-                            type="button"
-                            onClick={() => confirmPassword()}
-                            disabled={formProcessing}
-                        />
-                    </DialogModal.Footer>
-                </DialogModal>
-            )}
+                        <InputError message={errors.password} className="mt-2" />
+                    </div>
+                </DialogModal.Content>
+                <DialogModal.Footer>
+                    <SecondaryButton
+                        onClick={() => {
+                            setConfirmingLogout(false);
+                        }}
+                    >
+                        {t('app.nevermind')}
+                    </SecondaryButton>
+
+                    <Button
+                        className={`${formProcessing ? 'opacity-25' : ''} ml-2`}
+                        type="button"
+                        onClick={() => confirmPassword()}
+                        disabled={formProcessing}
+                    >
+                        {t(button)}
+                    </Button>
+                </DialogModal.Footer>
+            </DialogModal>
         </span>
     );
 };
@@ -103,11 +99,7 @@ ConfirmPassword.propTypes = {
     content: PropTypes.string,
     button: PropTypes.string,
     confirmed: PropTypes.func,
-    children: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.string,
-    ]).isRequired,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.string]).isRequired,
 };
 
 ConfirmPassword.defaultProps = {

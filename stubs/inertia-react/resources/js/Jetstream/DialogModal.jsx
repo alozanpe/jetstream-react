@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+
 import Modal from '@/Jetstream/Modal';
 
 const Title = () => null;
@@ -12,7 +13,7 @@ const DialogModal = forwardRef(({ children, show, maxWidth, onClose, closeable }
     const footer = children.find((child) => child.type === Footer);
 
     return (
-        <Modal open={show} width={maxWidth} closeable={closeable} onClose={onClose} ref={focusRef}>
+        <Modal show={show} width={maxWidth} closeable={closeable} onClose={onClose} ref={focusRef}>
             <div className="px-6 py-4">
                 <div className="text-lg">{title ? title.props.children : null}</div>
 

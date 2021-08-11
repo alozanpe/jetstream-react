@@ -16,7 +16,9 @@ const DeleteTeamForm = () => {
         setConfirmingTeamDeletion(true);
     };
 
-    const deleteTeam = () => {
+    const deleteTeam = (e) => {
+        e.preventDefault();
+
         form.delete(route('teams.destroy', team), {
             errorBag: 'deleteTeam',
         });
@@ -39,7 +41,7 @@ const DeleteTeamForm = () => {
                 </div>
 
                 {/* Delete Team Confirmation Modal */}
-                <ConfirmationModal show={confirmingTeamDeletion}>
+                <ConfirmationModal show={confirmingTeamDeletion} onClose={() => setConfirmingTeamDeletion(false)}>
                     <ConfirmationModal.Title>Delete Team</ConfirmationModal.Title>
 
                     <ConfirmationModal.Content>
@@ -51,9 +53,8 @@ const DeleteTeamForm = () => {
                         <SecondaryButton onClick={() => setConfirmingTeamDeletion(false)}>Cancel</SecondaryButton>
 
                         <DangerButton
-                            className="ml-2"
                             onClick={deleteTeam}
-                            className={`${form.processing ? 'opacity-25' : ''}`}
+                            className={`${form.processing ? 'opacity-25' : ''} ml-2`}
                             disabled={form.processing}
                         >
                             Delete Team

@@ -436,7 +436,6 @@ EOF;
                 'react-dom' => '^17.0.1',
                 'react-i18next' => '^11.8.5',
                 'react-redux' => '^7.2.2',
-                'react-transition-group' => '^4.4.1',
                 'tailwindcss' => '^2.0.1',
             ] + $packages;
         });
